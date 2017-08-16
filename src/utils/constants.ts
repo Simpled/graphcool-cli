@@ -412,7 +412,7 @@ Are you absolutely sure you want to delete these projects? ${chalk.bold(`This op
  */
 
 export const contactUs = `\
- * Get in touch if you need help: https://github.com/graphcool/graphcool-cli`
+ * Get in touch if you need help: https://www.graph.cool/forum`
 
 export const setDebugMessage = `\
  * You can enable additional output by setting \`export DEBUG=graphcool\` and rerunning the command.
