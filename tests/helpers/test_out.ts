@@ -1,7 +1,7 @@
 import { Out } from '../../src/types'
 import * as fs from 'fs'
 import * as chalk from 'chalk'
-import {setDebugMessage, contactUsInSlackMessage} from '../../src/utils/constants'
+import {setDebugMessage, contactUs} from '../../src/utils/constants'
 import figures = require('figures')
 
 export default class TestOut implements Out {
@@ -39,7 +39,7 @@ export default class TestOut implements Out {
       this.write(`${message}\n`)
     }
 
-    this.write(`\n${setDebugMessage}\n${contactUsInSlackMessage}\n`)
+    this.write(`\n${setDebugMessage}\n${contactUs}\n`)
   }
 
 }

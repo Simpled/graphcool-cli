@@ -10,7 +10,7 @@ import {
 import {
   graphcoolConfigFilePath,
   systemAPIEndpoint,
-  contactUsInSlackMessage,
+  contactUs,
   statusEndpoint,
 } from '../utils/constants'
 import 'isomorphic-fetch'
@@ -400,7 +400,7 @@ export function parseErrors(response: any): APIError[] {
 
 export function generateErrorOutput(apiErrors: APIError[]): string {
   const lines = apiErrors.map(error => `${error.message} (Request ID: ${error.requestId})`)
-  const output = `\n${lines.join('\n')}\n\n${contactUsInSlackMessage}`
+  const output = `\n${lines.join('\n')}\n\n${contactUs}`
   return output
 }
 

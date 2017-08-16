@@ -411,8 +411,8 @@ Are you absolutely sure you want to delete these projects? ${chalk.bold(`This op
  * Terminal output: general
  */
 
-export const contactUsInSlackMessage = `\
- * Get in touch if you need help: http://slack.graph.cool/`
+export const contactUs = `\
+ * Get in touch if you need help: https://github.com/graphcool/graphcool-cli`
 
 export const setDebugMessage = `\
  * You can enable additional output by setting \`export DEBUG=graphcool\` and rerunning the command.

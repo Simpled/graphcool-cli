@@ -1,5 +1,5 @@
 import { Out } from '../types'
-import { setDebugMessage, contactUsInSlackMessage } from '../utils/constants'
+import { setDebugMessage, contactUs } from '../utils/constants'
 import { makePartsEnclodesByCharacterBold } from '../utils/utils'
 import * as chalk from 'chalk'
 import figures = require('figures')
@@ -46,7 +46,7 @@ export default class StdOut implements Out {
       console.error(JSON.stringify(error))
     }
 
-    console.error(`\n${setDebugMessage}\n${contactUsInSlackMessage}\n`)
+    console.error(`\n${setDebugMessage}\n${contactUs}\n`)
 
     await new Promise(resolve => Raven.captureException(error, resolve))
 
