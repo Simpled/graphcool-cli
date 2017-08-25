@@ -6,7 +6,7 @@ import { InitProps } from './commands/init'
 import { ExportCliProps } from './commands/export'
 import { DeleteCliProps } from './commands/delete'
 import { ConsoleProps } from './commands/console'
-import { CloneProps } from './commands/clone'
+// import { CloneProps } from './commands/clone'
 import { ProjectsProps } from './commands/projects'
 import { PullCliProps } from './commands/pull'
 import { QuickstartProps } from './commands/quickstart'
@@ -33,7 +33,7 @@ export type Command =
 
 export type CommandProps =
   AuthProps
-  | CloneProps
+  // | CloneProps
   | ConsoleProps
   | DeleteCliProps
   | ExportCliProps
