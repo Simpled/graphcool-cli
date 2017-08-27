@@ -130,7 +130,7 @@ class Client {
 
   async push(projectId: string, force: boolean, isDryRun: boolean, version: number, config: ProjectDefinition): Promise<MigrationResult> {
     const mutation = `\
-      mutation($newSchema: String!, $force: Boolean, $isDryRun: Boolean!, $version: Int!, $config: String!) {
+      mutation($projectId: String!, $force: Boolean, $isDryRun: Boolean!, $version: Int!, $config: String!) {
         push(input: {
           projectId: $projectId
           force: $force
@@ -164,7 +164,13 @@ class Client {
         }
       }
     `
-    const {push} = await this.client.request<{push: MigrateProjectPayload}>(mutation, {projectId, force, isDryRun, version, config})
+    const {push} = await this.client.request<{push: MigrateProjectPayload}>(mutation, {
+      projectId,
+      force,
+      isDryRun,
+      version,
+      config: JSON.stringify(config),
+    })
 
     return {
       migrationMessages: push.migrationMessages,
@@ -247,7 +253,6 @@ class Client {
           }
         }
       }
-      ${REMOTE_PROJECT_FRAGMENT}
       `, {projectId})
 
     return project.version
@@ -270,7 +275,6 @@ class Client {
           }
         }
       }
-      ${REMOTE_PROJECT_FRAGMENT}
       `, {projectId})
 
     return project.name

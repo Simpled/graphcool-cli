@@ -15,6 +15,7 @@ import client from '../io/Client'
 import { printMigrationErrors, printMigrationMessages } from '../utils/migration'
 import env from '../io/Environment'
 import { generateErrorOutput, parseErrors } from '../utils/errors'
+import definition from '../io/ProjectDefinition/ProjectDefinition'
 
 export interface PushPullCliProps {
   project?: string
@@ -43,12 +44,14 @@ export default async ({force, projectEnvironment: {projectId, version}, envName}
       throw new Error(remoteSchemaAheadMessage(projectInfo.version, version))
     }
 
-    const migrationResult: any = null// = await pushNewSchema(schemaWithFrontmatter, force, resolver)
+    const migrationResult: any = await client.push(projectId, force, false, version, definition.definition)
+
+    console.log(JSON.stringify(migrationResult, null, 2))
 
     out.stopSpinner()
 
     // no action required
-    if (migrationResult.messages.length === 0 && migrationResult.errors.length === 0) {
+    if ((!migrationResult.messages || migrationResult.messages.length === 0) && (!migrationResult.errors || migrationResult.errors.length === 0)) {
       out.write(noActionRequiredMessage)
       return
     }

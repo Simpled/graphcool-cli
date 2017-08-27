@@ -38,6 +38,10 @@ class Environment {
     fs.writeFileSync(envPath, file)
   }
 
+  public setEnv(name: string, projectEnv: ProjectEnvironment) {
+    this.env.environments[name] = projectEnv
+  }
+
   public async set(name: string, projectId: string) {
     const version = await client.getProjectVersion(projectId)
 
@@ -52,6 +56,10 @@ class Environment {
       projectId: this.env.environments[name].projectId,
       version,
     }
+  }
+
+  public setDefault(name: string) {
+    this.env.default = name
   }
 
   public rename(oldName: string, newName: string) {

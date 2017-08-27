@@ -55,6 +55,7 @@
     "raven": "^2.0.2",
     "rimraf": "^2.6.1",
     "sillyname": "^0.1.0",
+    "source-map-support": "^0.4.16",
     "table": "4.0.1",
     "terminal-kit": "^1.4.4"
   }

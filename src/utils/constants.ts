@@ -194,7 +194,7 @@ The project environment file (${graphcoolEnvironmentFileName}) that you provided
 `
 
 export const pushingNewSchemaMessage = `\
-Migrating the schema in your project...`
+Pushing your project...`
 
 
 export const noActionRequiredMessage = `\

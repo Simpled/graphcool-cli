@@ -2,6 +2,8 @@
 import { ProjectDefinition } from '../../types'
 import fsToProject from './fsToProject'
 import projectToFs from './projectToFs'
+import * as fs from 'fs'
+import * as path from 'path'
 
 class ProjectDefinitionClass {
   definition: ProjectDefinition
@@ -21,5 +23,8 @@ class ProjectDefinitionClass {
 
 
 const definition = new ProjectDefinitionClass()
+if (fs.existsSync(path.join(process.cwd(), 'graphcool.yml'))) {
+  definition.load()
+}
 
 export default definition

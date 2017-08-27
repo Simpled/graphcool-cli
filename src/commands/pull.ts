@@ -4,11 +4,12 @@ import {
 } from '../utils/constants'
 import out from '../io/Out'
 import { interactiveProjectSelection } from '../utils/projectSelection'
-import { ProjectEnvironment } from '../types'
+import { ProjectEnvironment, ProjectInfo } from '../types'
 import definition from '../io/ProjectDefinition/ProjectDefinition'
 import client from '../io/Client'
 import { diff, printDiff } from '../io/ProjectDefinition/diff'
 import { generateErrorOutput, parseErrors } from '../utils/errors'
+import env from '../io/Environment'
 
 const {terminal} = require('terminal-kit')
 
@@ -23,12 +24,29 @@ export default async (props: PullProps): Promise<void> => {
 
   let projectId = props.projectId || await interactiveProjectSelection()
   let envName = props.envName || 'dev'
-  let projectInfo
+  let projectInfo: ProjectInfo
+  const newProject = !definition.definition
 
   try {
     out.startSpinner(`${fetchingProjectDataMessage}`)
     projectInfo = await client.fetchProjectInfo(projectId)
     out.stopSpinner()
+
+    if (!newProject && !props.force) {
+      printDiff(diff(definition.definition.modules[0], projectInfo.projectDefinition.modules[0]))
+      out.write(warnOverrideProjectFileMessage)
+      // exits if there it no valid input
+      await waitForInput()
+    }
+
+    definition.set(projectInfo.projectDefinition)
+    await definition.save()
+    await env.setEnv(envName, {projectId, version: projectInfo.version})
+    if (newProject) {
+      env.setDefault(envName)
+    }
+    env.save()
+    console.log(`Saved new project, environment name: ${envName}, project id: "${projectId}"`)
   } catch (e) {
     out.stopSpinner()
     if (e.errors) {
@@ -39,17 +57,6 @@ export default async (props: PullProps): Promise<void> => {
       throw e
     }
   }
-
-  if (definition.definition && !props.force) {
-    printDiff(diff(definition.definition[0], projectInfo.projectDefinition[0]))
-    out.write(warnOverrideProjectFileMessage)
-    // exits if there it no valid input
-    await waitForInput()
-  }
-
-  definition.set(projectInfo.projectDefinition)
-  await definition.save()
-  console.log(`Saved new project, environment name: ${envName}, project id: "${projectId}"`)
 }
 
 function waitForInput() {

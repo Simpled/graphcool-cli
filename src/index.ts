@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import 'source-map-support/register'
 import { CommandInstruction } from './types'
 import pushCommand, { PushPullCliProps } from './commands/push'
 import consoleCommand, { ConsoleProps } from './commands/console'

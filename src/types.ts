@@ -82,6 +82,12 @@ export interface RemoteProject extends Project {
 }
 
 export interface ProjectInfo extends Project {
+  id: string
+  name: string
+  schema: string
+  version: number
+  alias: string
+  region: string
   projectDefinition: ProjectDefinition
 }
 
