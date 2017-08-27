@@ -1,10 +1,9 @@
 import open = require('open')
-import {
-  consoleURL,
-  notAuthenticatedMessage, openedConsoleMessage
-} from '../utils/constants'
+import { consoleURL, notAuthenticatedMessage, openedConsoleMessage } from '../utils/constants'
 import client from '../io/Client'
-const debug = require('debug')('graphcool')
+import config from '../io/GraphcoolRC'
+import out from '../io/Out'
+
 
 export interface ConsoleProps {
   projectId: string
@@ -12,7 +11,7 @@ export interface ConsoleProps {
 
 export default async (props: ConsoleProps): Promise<void> => {
 
-  const token = env.config.get('token')
+  const {token} = config
   if (!token) {
     throw new Error(notAuthenticatedMessage)
   }

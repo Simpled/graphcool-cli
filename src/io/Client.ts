@@ -1,13 +1,17 @@
-import {GraphQLClient} from 'graphql-request'
+import { GraphQLClient } from 'graphql-request'
 import { statusEndpoint, systemAPIEndpoint } from '../utils/constants'
 import {
   CommandInstruction,
-  MigrateProjectPayload, MigrationResult, Project, ProjectDefinition, ProjectInfo,
+  MigrateProjectPayload,
+  MigrationResult,
+  Project,
+  ProjectDefinition,
+  ProjectInfo,
   RemoteProject
 } from '../types'
 import { getFastestRegion } from '../utils/ping'
-import {omit} from 'lodash'
-import config from './config'
+import { omit } from 'lodash'
+import config from './GraphcoolRC'
 
 const REMOTE_PROJECT_FRAGMENT = `
   fragment RemoteProject on Project {
@@ -207,7 +211,7 @@ class Client {
     interface ProjectInfoPayload {
       viewer: {
         project: {
-          name: number
+          name: string
         }
       }
     }

@@ -1,11 +1,10 @@
-import { SystemEnvironment } from '../types'
-import { fetchProjects } from '../utils/api'
-import figures = require('figures')
 import {
   couldNotFetchProjectsMessage, graphcoolEnvironmentFileName,
 } from '../utils/constants'
-import { readProjectIdFromProjectFile } from '../utils/file'
 import { regionEnumToOption } from '../utils/utils'
+import client from '../io/Client'
+import env from '../io/Environment'
+import out from '../io/Out'
 
 const {table, getBorderCharacters} = require('table')
 const debug = require('debug')('graphcool')
@@ -14,20 +13,16 @@ export interface ProjectsProps {
 
 }
 
-export default async (props: ProjectsProps, env: SystemEnvironment): Promise<void> => {
-
-  const {resolver, out} = env
+export default async (props: ProjectsProps): Promise<void> => {
 
   try {
-    const projects = await fetchProjects(resolver)
+    const projects = await client.fetchProjects()
 
-    const currentProjectId = resolver.exists(graphcoolEnvironmentFileName) ?
-      readProjectIdFromProjectFile(resolver, graphcoolEnvironmentFileName) :
-      null
+    const currentProjectId = env.default ? env.default.projectId : null
 
     const data = projects.map(project => {
-      const isCurrentProject = currentProjectId !== null && (currentProjectId === project.projectId || currentProjectId === project.alias)
-      return [isCurrentProject ? '*' : ' ', `${project.alias || project.projectId}   `, project.name, regionEnumToOption(project.region)]
+      const isCurrentProject = currentProjectId !== null && (currentProjectId === project.id || currentProjectId === project.alias)
+      return [isCurrentProject ? '*' : ' ', `${project.alias || project.id}   `, project.name, regionEnumToOption(project.region)]
     })
 
     const output = table(data, {

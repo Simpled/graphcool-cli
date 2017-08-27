@@ -182,7 +182,7 @@ Your schema file ${chalk.bold(schemaFileName)} is invalid. A schema file must en
  * Terminal output: push
  */
 
-export const remoteSchemaAheadMessage = (remoteVersion: string, localVersion: string) => `\
+export const remoteSchemaAheadMessage = (remoteVersion: number, localVersion: number) => `\
 The local version of your schema (${localVersion}) is behind the remote version (${remoteVersion}). Save your local changes and run ${chalk.cyan(`\`graphcool pull\``)} before retrying.`
 
 export const noProjectFileForPushMessage = `\
@@ -437,10 +437,6 @@ No project file found.
 
 export const notAuthenticatedMessage = `\
 You're currently not logged in. You can use the auth command to authenticate with ${chalk.cyan(`\`graphcool auth\``)}
-`
-
-export const projectFileWasUpdatedMessage = (projectFile: string) => `\
-Your project file ${chalk.bold(projectFile)} was updated. Reload it in your editor if needed.
 `
 
 export const canNotReadVersionFromProjectFile = (projectFile: string) => `\

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { CommandInstruction } from './types'
-import pushCommand, { PushProps } from './commands/push'
+import pushCommand, { PushCliProps, PushProps } from './commands/push'
 import consoleCommand, { ConsoleProps } from './commands/console'
 import playgroundCommand, { PlaygroundProps } from './commands/playground'
 import projectsCommand from './commands/projects'
@@ -20,6 +20,7 @@ import { usageRoot, } from './utils/usage'
 import env from './io/Environment'
 import { pick } from 'lodash'
 import { InfoProps } from './commands/info'
+import out from './io/Out'
 
 const Raven = require('raven')
 const debug = require('debug')('graphcool')
@@ -48,12 +49,19 @@ async function main() {
     //   break
     // }
 
-    // TODO reenable push as soon as the backend is ready
-    // case 'push': {
-    //   await checkAuth('auth')
-    //   await pushCommand(props as PushProps)
-    //   break
-    // }
+    case 'push': {
+      await checkAuth('auth')
+      const projectId: string = env.getProjectId(pick<string, PushCliProps>(props as PushCliProps, ['project', 'env']))
+      const projectEnvironment = env.getEnvironment(projectId)
+      if (!projectEnvironment) {
+        throw new Error(`In order to push you need to have project id ${projectId} in the local .graphcool.env`)
+      }
+      await pushCommand({
+        ...projectEnvironment,
+        force: (props as any).force,
+      })
+      break
+    }
 
     case 'delete': {
       await checkAuth('auth')
@@ -81,8 +89,8 @@ async function main() {
 
     case 'info': {
       await checkAuth('auth')
-      const projectId = env.getProjectId(props)
-      await infoCommand(props as InfoProps)
+      const projectId = env.getProjectId(props as any)
+      await infoCommand({projectId} as InfoProps)
       break
     }
 
@@ -135,6 +143,6 @@ async function main() {
   process.stdout.write('\n')
 }
 
-process.on('unhandledRejection', e => new StdOut().onError(e))
+process.on('unhandledRejection', e => out.onError(e))
 
 main()

@@ -47,6 +47,13 @@ class Environment {
     }
   }
 
+  public setVersion(name: string, version: number) {
+    this.env.environments[name] = {
+      projectId: this.env.environments[name].projectId,
+      version,
+    }
+  }
+
   public rename(oldName: string, newName: string) {
 
   }
@@ -75,6 +82,22 @@ class Environment {
     }
 
     throw new Error(noDefaultEnvironmentProvidedMessage)
+  }
+
+  public getEnvironment(projectId: string): {projectEnvironment: ProjectEnvironment, envName: string} | null {
+    const envName = Object.keys(this.env.environments).find(key => {
+      const projectEnv = this.env.environments[key]
+      return projectEnv.projectId === projectId
+    })
+
+    if (envName) {
+      return {
+        projectEnvironment: this.env.environments[envName],
+        envName,
+      }
+    }
+
+    return null
   }
 
 }

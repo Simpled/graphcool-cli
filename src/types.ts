@@ -11,6 +11,7 @@ import { ProjectsProps } from './commands/projects'
 import { PullCliProps } from './commands/pull'
 import { QuickstartProps } from './commands/quickstart'
 import { InfoCliProps } from './commands/info'
+import { PushCliProps } from './commands/push'
 
 export type Command =
   'auth'
@@ -44,8 +45,8 @@ export type CommandProps =
   | PullCliProps
   | QuickstartProps
   | UsageProps
+  | PushCliProps
 // | InteractiveInitProps
-// | PushProps
 
 interface UsageProps {
   command: Command
@@ -73,7 +74,7 @@ export interface Project {
   id: string
   name: string
   schema: string
-  version: string
+  version: number
   alias: string
   region: string
 }
@@ -111,7 +112,7 @@ export interface MigrateProjectPayload {
 export interface MigrationResult {
   migrationMessages: MigrationMessage[]
   errors: MigrationErrorMessage[]
-  newVersion: string
+  newVersion: number
   newSchema: string
 }
 
