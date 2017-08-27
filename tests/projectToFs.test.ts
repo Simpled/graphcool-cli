@@ -19,10 +19,6 @@ test.before(async () => {
   await projectToFs(mockDefinition, fsToProjectDir)
 })
 
-test.only('string diff', async t => {
-  t.deepEqual(`hallo\nwie\ngehts`, `hallo\nwie\ngehts\n123`)
-})
-
 test('project to fs', async t => {
   await projectToFs(mockDefinition, projectToFsDir)
   const absoluteFileNames: string[] = await globby(projectToFsDir + '/**/*.*')

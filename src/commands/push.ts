@@ -16,18 +16,18 @@ import { printMigrationErrors, printMigrationMessages } from '../utils/migration
 import env from '../io/Environment'
 import { generateErrorOutput, parseErrors } from '../utils/errors'
 
-export interface PushCliProps {
+export interface PushPullCliProps {
   project?: string
   env?: string
 }
 
-export interface PushProps {
+export interface PushPullProps {
   force: boolean
   projectEnvironment: ProjectEnvironment
   envName: string
 }
 
-export default async ({force, projectEnvironment: {projectId, version}, envName}: PushProps): Promise<void> => {
+export default async ({force, projectEnvironment: {projectId, version}, envName}: PushPullProps): Promise<void> => {
   const projectInfo = await client.fetchProjectInfo(projectId)
   if (!projectInfo) {
     throw new Error(invalidProjectFileMessage)

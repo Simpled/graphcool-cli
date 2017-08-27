@@ -8,10 +8,9 @@ import { DeleteCliProps } from './commands/delete'
 import { ConsoleProps } from './commands/console'
 // import { CloneProps } from './commands/clone'
 import { ProjectsProps } from './commands/projects'
-import { PullCliProps } from './commands/pull'
 import { QuickstartProps } from './commands/quickstart'
 import { InfoCliProps } from './commands/info'
-import { PushCliProps } from './commands/push'
+import { PushPullCliProps } from './commands/push'
 
 export type Command =
   'auth'
@@ -42,10 +41,9 @@ export type CommandProps =
   | InfoCliProps
   | PlaygroundProps
   | ProjectsProps
-  | PullCliProps
+  | PushPullCliProps
   | QuickstartProps
   | UsageProps
-  | PushCliProps
 // | InteractiveInitProps
 
 interface UsageProps {

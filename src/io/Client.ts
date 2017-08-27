@@ -128,6 +128,52 @@ class Client {
     }
   }
 
+  async push(projectId: string, force: boolean, isDryRun: boolean, version: number, config: ProjectDefinition): Promise<MigrationResult> {
+    const mutation = `\
+      mutation($newSchema: String!, $force: Boolean, $isDryRun: Boolean!, $version: Int!, $config: String!) {
+        push(input: {
+          projectId: $projectId
+          force: $force
+          isDryRun: $isDryRun
+          version: $version
+          config: $config
+        }) {
+          migrationMessages {
+            type
+            action
+            name
+            description
+            subDescriptions {
+              type
+              action
+              name
+              description
+            }
+          }
+          errors {
+            description
+            type
+            field
+          }
+          project {
+            id
+            name
+            alias
+            version
+          }
+        }
+      }
+    `
+    const {push} = await this.client.request<{push: MigrateProjectPayload}>(mutation, {projectId, force, isDryRun, version, config})
+
+    return {
+      migrationMessages: push.migrationMessages,
+      errors: push.errors,
+      newVersion: push.project.version,
+      newSchema: push.project.schema,
+    }
+  }
+
   async fetchProjects(): Promise<Project[]> {
     interface ProjectsPayload {
       viewer: {

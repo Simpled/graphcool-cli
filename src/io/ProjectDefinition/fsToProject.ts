@@ -6,8 +6,8 @@ import { GCL } from '../../gcl-types'
 
 export default async function fsToProject(inputDir: string): Promise<ProjectDefinition> {
 
-  const schema = fs.readFileSync(path.join(__dirname, '../../gcl/project-schema.graphql'), 'utf-8')
-  const definition = fs.readFileSync(path.join(inputDir, 'project.gcl'), 'utf-8')
+  const schema = fs.readFileSync(path.join(__dirname, '../../../../src/gcl/project-schema.graphql'), 'utf-8')
+  const definition = fs.readFileSync(path.join(inputDir, 'graphcool.yml'), 'utf-8')
 
   let module: GraphcoolModule = {
     name: '',

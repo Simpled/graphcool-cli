@@ -13,6 +13,10 @@ class ProjectDefinitionClass {
   public async save() {
     await projectToFs(this.definition, process.cwd())
   }
+
+  public set(definition: ProjectDefinition) {
+    this.definition = definition
+  }
 }
 
 

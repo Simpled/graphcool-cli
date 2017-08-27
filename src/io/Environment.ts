@@ -62,7 +62,7 @@ class Environment {
 
   }
 
-  public getProjectId({projectId, env}: {projectId?: string, env?: string}) {
+  public getProjectId({projectId, env}: {projectId?: string, env?: string}): string | null {
     if (projectId) {
       return projectId
     }
@@ -81,7 +81,7 @@ class Environment {
       return this.default.projectId
     }
 
-    throw new Error(noDefaultEnvironmentProvidedMessage)
+    return null
   }
 
   public getEnvironment(projectId: string): {projectEnvironment: ProjectEnvironment, envName: string} | null {

@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 
 import { CommandInstruction } from './types'
-import pushCommand, { PushCliProps, PushProps } from './commands/push'
+import pushCommand, { PushPullCliProps } from './commands/push'
 import consoleCommand, { ConsoleProps } from './commands/console'
 import playgroundCommand, { PlaygroundProps } from './commands/playground'
 import projectsCommand from './commands/projects'
-import pullCommand, { PullCliProps, PullProps } from './commands/pull'
+import pullCommand from './commands/pull'
 import initCommand, { InitProps } from './commands/init'
 import exportCommand, { ExportProps } from './commands/export'
 import quickstartCommand from './commands/quickstart'
@@ -15,7 +15,7 @@ import infoCommand from './commands/info'
 import { parseCommand } from './utils/parseCommand'
 import { checkAuth } from './utils/auth'
 import { GraphcoolAuthServer } from './io/GraphcoolAuthServer'
-import { sentryDSN, } from './utils/constants'
+import { noDefaultEnvironmentProvidedMessage, sentryDSN, } from './utils/constants'
 import { usageRoot, } from './utils/usage'
 import env from './io/Environment'
 import { pick } from 'lodash'
@@ -51,7 +51,10 @@ async function main() {
 
     case 'push': {
       await checkAuth('auth')
-      const projectId: string = env.getProjectId(pick<string, PushCliProps>(props as PushCliProps, ['project', 'env']))
+      const projectId = env.getProjectId(pick<string, PushPullCliProps>(props as PushPullCliProps, ['project', 'env']))
+      if (!projectId) {
+        throw new Error(noDefaultEnvironmentProvidedMessage)
+      }
       const projectEnvironment = env.getEnvironment(projectId)
       if (!projectEnvironment) {
         throw new Error(`In order to push you need to have project id ${projectId} in the local .graphcool.env`)
@@ -63,21 +66,25 @@ async function main() {
       break
     }
 
-    case 'delete': {
+    case 'pull': {
       await checkAuth('auth')
-      const projectId = env.getProjectId(props as DeleteCliProps)
-      await deleteCommand({projectId})
+      const projectId = env.getProjectId(pick<string, PushPullCliProps>(props as PushPullCliProps, ['project', 'env']))
+      const projectEnvironment = env.getEnvironment(projectId || '')
+      await pullCommand({
+        projectId,
+        ...projectEnvironment,
+        force: (props as any).force,
+      })
       break
     }
 
-    case 'pull': {
+    case 'delete': {
       await checkAuth('auth')
-      const projectId: string = env.getProjectId(pick<string, PullCliProps>(props as PullCliProps, ['project', 'env']))
-      await pullCommand({
-        projectId,
-        outputPath: (props as any).outputPath,
-        force: (props as any).force,
-      })
+      const projectId = env.getProjectId(props as DeleteCliProps)
+      if (!projectId) {
+        throw new Error(noDefaultEnvironmentProvidedMessage)
+      }
+      await deleteCommand({projectId})
       break
     }
 

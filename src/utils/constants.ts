@@ -273,13 +273,8 @@ export const newVersionMessage = (newVersion: string) => `\
 The new schema version is ${chalk.bold(newVersion)}.
 `
 
-export const differentProjectIdWarningMessage = (inputProjectId: string, readProjectId: string) => `\
-The project ID you provided (${inputProjectId}) is different than the one in the current project file (${readProjectId}).
-This will override the current project file with a different project, do you still want to continue? [y|N]
-`
-
-export const warnOverrideProjectFileMessage = (projectFile: string) => `\
-You are about to override the local project file ${chalk.bold(projectFile)}. Make sure to save local changes that you want to preserve.
+export const warnOverrideProjectFileMessage = `\
+You are about to override the local project. Make sure to save local changes that you want to preserve.
 Do you want to continue? [y|N]
 `
 
