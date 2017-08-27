@@ -1,13 +1,8 @@
-export interface GCL {
-  databaseSchema: DatabaseSchema
-  modelPermissions: ModelPermission[]
-  relationPermissions: RelationPermission[]
+export interface GraphcoolDefinition {
+  types: string
+  permissions: Array<ModelPermission | RelationPermission>
   functions: FunctionDefinition[]
-  pats: PermanentAuthToken[]
-}
-
-export interface DatabaseSchema {
-  src: string
+  rootTokens: PermanentAuthToken[]
 }
 
 export interface ModelPermission {
