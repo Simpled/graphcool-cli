@@ -15,7 +15,7 @@ const {terminal} = require('terminal-kit')
 interface PullProps {
   projectId: string | null
   force?: boolean
-  projectEnvironment: ProjectEnvironment | null
+  projectEnvironment?: ProjectEnvironment | null
   envName?: string
 }
 

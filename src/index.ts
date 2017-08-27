@@ -51,7 +51,7 @@ async function main() {
 
     case 'push': {
       await checkAuth('auth')
-      const projectId = env.getProjectId(pick<string, PushPullCliProps>(props as PushPullCliProps, ['project', 'env']))
+      const projectId = env.getProjectId(pick<any, any>(props as PushPullCliProps, ['project', 'env']))
       if (!projectId) {
         throw new Error(noDefaultEnvironmentProvidedMessage)
       }
@@ -68,12 +68,12 @@ async function main() {
 
     case 'pull': {
       await checkAuth('auth')
-      const projectId = env.getProjectId(pick<string, PushPullCliProps>(props as PushPullCliProps, ['project', 'env']))
+      const projectId = env.getProjectId(pick<any, any>(props as PushPullCliProps, ['project', 'env']))
       const projectEnvironment = env.getEnvironment(projectId || '')
       await pullCommand({
         projectId,
-        ...projectEnvironment,
         force: (props as any).force,
+        ...projectEnvironment,
       })
       break
     }
