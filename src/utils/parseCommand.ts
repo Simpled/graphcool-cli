@@ -1,5 +1,5 @@
 import * as minimist from 'minimist'
-import { Command, CommandInstruction, SystemEnvironment } from '../types'
+import { Command, CommandInstruction } from '../types'
 import { unknownOptionsWarning } from './constants'
 import { optionsForCommand } from './arguments'
 import client from '../io/client'

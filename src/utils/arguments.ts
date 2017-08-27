@@ -8,9 +8,7 @@ import {
   usageVersion,
   usageConsole,
   usageExport,
-  usageEndpoints,
   usagePlayground,
-  usageStatus,
   usageQuickstart,
   usageDelete
 } from './usage'
@@ -41,9 +39,9 @@ export function usageForCommand(command: Command): string {
     case 'version': return usageVersion
     case 'console': return usageConsole
     case 'export': return usageExport
-    case 'endpoints': return usageEndpoints
+    // case 'endpoints': return usageEndpoints
     case 'playground': return usagePlayground
-    case 'status': return usageStatus
+    // case 'status': return usageStatus
     case 'quickstart': return usageQuickstart
     case 'delete': return usageDelete
   }

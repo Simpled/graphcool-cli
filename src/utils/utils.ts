@@ -1,15 +1,4 @@
-import {ProjectInfo} from '../types'
 import * as chalk from 'chalk'
-import figures = require('figures')
-
-interface Range {
-  startIndex: number
-  endIndex: number
-}
-
-export function projectInfoToContents(projectInfo: ProjectInfo): string {
-  return `# project: ${projectInfo.alias || projectInfo.projectId}\n# version: ${projectInfo.version}\n\n${projectInfo.schema}`
-}
 
 export function makePartsEnclodesByCharacterBold(str: string, character: string): string {
   const components = str.split(character)

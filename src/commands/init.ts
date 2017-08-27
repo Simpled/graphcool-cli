@@ -1,7 +1,6 @@
 import { Region } from '../types'
 import 'isomorphic-fetch'
 // import cloneCommand from './clone'
-import { projectInfoToContents } from '../utils/utils'
 import { isValidProjectName } from '../utils/validation'
 import {
   couldNotCreateProjectMessage,
@@ -56,7 +55,7 @@ export default async (props: InitProps): Promise<void> => {
 
     out.stopSpinner()
 
-    const message = createdProjectMessage(name, project.id, projectInfoToContents(project), props.outputPath)
+    const message = createdProjectMessage(name, project.id, props.outputPath)
     out.write(message)
 
   } catch (e) {

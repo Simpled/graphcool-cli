@@ -1,4 +1,5 @@
-import { GraphcoolConfig, ProjectInfo, ProjectEnvironment } from '../types'
+// TODO remove this file after cleanup
+import { ProjectEnvironment } from '../types'
 import gclToJson from 'gcl-lib'
 import * as fs from 'fs'
 import * as path from 'path'

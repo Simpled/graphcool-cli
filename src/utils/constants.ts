@@ -120,7 +120,7 @@ export const authenticationSuccessMessage = (email: string) => ` ${chalk.green(f
 export const creatingProjectMessage = (name: string) => `Creating project ${chalk.bold(name)}...`
 // TODO incorporate environment into createdProjectMessage
 // something like: it's now accessible with the env 'dev'
-export const createdProjectMessage = (name: string, projectId: string, projectFileContent: string, projectOutputPath?: string) => `\
+export const createdProjectMessage = (name: string, projectId: string, projectOutputPath?: string) => `\
  ${chalk.green(figures.tick)} Created project ${chalk.bold(name)} (ID: ${projectId}) successfully.
 
 
