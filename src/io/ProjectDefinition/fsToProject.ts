@@ -1,8 +1,8 @@
 import * as path from 'path'
 import * as fs from 'fs'
 import { ProjectDefinition, GraphcoolModule } from '../../types'
-import { GraphcoolDefinition } from '../../gcl-types'
 import { readDefinition } from './yaml'
+import { FunctionDefinition, GraphcoolDefinition } from '../../definition-schema/ts-definition'
 
 export default async function fsToProject(inputDir: string): Promise<ProjectDefinition> {
 
@@ -38,7 +38,7 @@ export default async function fsToProject(inputDir: string): Promise<ProjectDefi
 
   if (definition.functions) {
     Object.keys(definition.functions).forEach(funcName => {
-      const func = definition.functions[funcName]
+      const func: FunctionDefinition = definition.functions[funcName]
       if (func.handler.code) {
         const functionCode = fs.readFileSync(path.join(inputDir, func.handler.code.src), 'utf-8')
         files = {

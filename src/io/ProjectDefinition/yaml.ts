@@ -1,7 +1,7 @@
 import * as Ajv from 'ajv'
-import { GraphcoolDefinition } from '../../gcl-types'
+import { GraphcoolDefinition } from '../../definition-schema/gcl-types'
 import * as anyjson from 'any-json'
-import schema from './json-schema'
+import schema from '../../definition-schema/json-schema'
 
 const ajv = new Ajv()
 

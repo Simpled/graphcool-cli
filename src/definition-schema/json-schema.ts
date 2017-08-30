@@ -46,59 +46,25 @@ export default {
           ]
         },
         "type": {
-          "oneOf": [
-            {
-              "type": "string",
-              "enum": [
-                "httpRequest",
-                "httpResponse"
-              ]
-            },
-            {
-              "type": "object",
-              "additionalProperties": false,
-              "minProperties": 1,
-              "properties": {
-                "operationBefore": {
-                  "type": "string",
-                  // (modelName.(create|update|delete) | relationName.(connect|disconnect))
-                  "pattern": "^[A-Z][a-zA-Z]*\\.(create|update|delete|connect|disconnect|\\*)$"
-                }
-              }
-            },
-            {
-              "type": "object",
-              "additionalProperties": false,
-              "minProperties": 1,
-              "properties": {
-                "operationAfter": {
-                  "type": "string",
-                  // (modelName.(create|update|delete) | relationName.(connect|disconnect))
-                  "pattern": "^[A-Z][a-zA-Z]*\\.(create|update|delete|connect|disconnect|\\*)$"
-                }
-              }
-            },
-            {
-              "type": "object",
-              "additionalProperties": false,
-              "minProperties": 1,
-              "properties": {
-                "subscription": {
-                  "type": "string"
-                }
-              }
-            },
-            {
-              "type": "object",
-              "additionalProperties": false,
-              "minProperties": 1,
-              "properties": {
-                "schemaExtension": {
-                  "type": "string"
-                }
-              }
-            }
+          "enum": [
+            "httpRequest",
+            "httpResponse",
+            "operationBefore",
+            "operationAfter",
+            "subscription",
+            "schemaExtension"
           ]
+        },
+        "operation": {
+          "type": "string",
+          // (modelName.(create|read|list|update|delete) | relationName.(connect|disconnect))
+          "pattern": "^[A-Z][a-zA-Z]*\\.(create|update|delete|read|list|connect|disconnect|\\*)$"
+        },
+        "schema": {
+          "type": "string"
+        },
+        "query": {
+          "type": "string"
         }
       },
       "required": [
@@ -146,7 +112,7 @@ export default {
       }
     },
     "rootTokens": {
-      "description": "List of tokens that provide root access (Use \`graphcool get-root-token <token-name>\` to retrieve the token)",
+      "description": "List of tokens that provide root access (Use graphcool get-root-token <token-name> to retrieve the token)",
       "type": "array",
       "items": {
         "type": "string"

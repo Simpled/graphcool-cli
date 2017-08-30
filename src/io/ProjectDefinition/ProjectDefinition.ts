@@ -24,7 +24,7 @@ class ProjectDefinitionClass {
 
 const definition = new ProjectDefinitionClass()
 if (fs.existsSync(path.join(process.cwd(), 'graphcool.yml'))) {
-  definition.load()
+  // definition.load()
 }
 
 export default definition
