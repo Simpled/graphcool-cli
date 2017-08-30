@@ -5,7 +5,6 @@ import { GraphcoolModule } from '../../types'
 import {difference} from 'lodash'
 
 export interface ModuleDiff {
-  definition?: string
   files: {[fileName: string]: Diff}
   changed: boolean
 }
@@ -23,6 +22,10 @@ export function diff(a: GraphcoolModule, b: GraphcoolModule): ModuleDiff {
   if (a.content !== b.content) {
     moduleDiff.definition = fileDiff(a.content, b.content)
     changed = true
+    files['graphcool.yml'] = {
+      diff: fileDiff(a.content, b.content || ''),
+      action: 'updated'
+    }
   }
 
   Object.keys(a.files).forEach(fileName => {
@@ -57,12 +60,6 @@ export function diff(a: GraphcoolModule, b: GraphcoolModule): ModuleDiff {
 export function printDiff(diff: ModuleDiff) {
   if (diff.changed) {
     console.log(chalk.bold('\nChanges since last pull:\n'))
-    if (diff.definition) {
-      console.log(`${chalk.dim('graphcool.yml')}`)
-      console.log(diff.definition)
-      console.log()
-    }
-
     Object.keys(diff.files).forEach(fileName => {
       const fileDiff = diff.files[fileName]
 

@@ -2,19 +2,26 @@ import * as path from 'path'
 import * as fs from 'fs'
 import { GraphcoolModule, ProjectDefinition } from '../../types'
 import * as mkdirp from 'mkdirp'
+import * as chalk from 'chalk'
+import out from '../Out'
 
-export default async function projectToFs(project: ProjectDefinition, outputDir: string): Promise<any> {
+export default async function projectToFs(project: ProjectDefinition, outputDir: string, files?: string[]): Promise<any> {
   for (const module of project.modules) {
-    await moduleToFs(module, outputDir)
+    await moduleToFs(module, outputDir, files)
   }
 }
 
-async function moduleToFs(module: GraphcoolModule, outputDir: string) {
-  const ymlPath = path.join(outputDir, 'graphcool.yml')
-  fs.writeFileSync(ymlPath, module.content)
-  console.log(`Written to graphcool.yml`)
+async function moduleToFs(module: GraphcoolModule, outputDir: string, files?: string[]) {
+  out.write('\n')
+  if ((files && files.includes('graphcool.yml') || !files)) {
+    const ymlPath = path.join(outputDir, 'graphcool.yml')
+    fs.writeFileSync(ymlPath, module.content)
+    out.write(chalk.bold(`\nWritten to graphcool.yml`))
+  }
 
-  for (const relativePath in module.files) {
+  const fileNames = files ? Object.keys(module.files).filter(f => files.includes(f)) : Object.keys(module.files)
+
+  for (const relativePath of fileNames) {
     const content = module.files[relativePath]
     const filePath = path.join(outputDir, relativePath)
     const dir = path.dirname(filePath)
@@ -29,6 +36,6 @@ async function moduleToFs(module: GraphcoolModule, outputDir: string) {
 
     mkdirp.sync(dir)
     fs.writeFileSync(filePath, content)
-    console.log(`Written to ${relativePath}`)
+    out.write(chalk.bold(`\nWritten to ${relativePath}`))
   }
 }
