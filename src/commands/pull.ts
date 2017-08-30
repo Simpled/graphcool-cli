@@ -48,7 +48,7 @@ export default async (props: PullProps): Promise<void> => {
           env.setDefault(envName)
         }
         env.save()
-        out.write(`\n\nPulled project with "${projectId}" and environment "${envName}"`)
+        out.write(`\n\nPulled project with id "${projectId}" and environment "${envName}"`)
       }
     }
   } catch (e) {
