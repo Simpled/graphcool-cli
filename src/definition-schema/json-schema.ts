@@ -13,7 +13,26 @@ export default {
         "handler": {
           "oneOf": [
             {
-              "type": "string"
+              "type": "object",
+              "additionalProperties": false,
+              "minProperties": 1,
+              "properties": {
+                "code": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "src": {
+                          "type": "string"
+                        },
+                      },
+                      "required": [
+                        "src"
+                      ]
+                    }
+                  ]
+                }
+              }
             },
             {
               "type": "object",
@@ -58,7 +77,8 @@ export default {
         "operation": {
           "type": "string",
           // (modelName.(create|read|list|update|delete) | relationName.(connect|disconnect))
-          "pattern": "^[A-Z][a-zA-Z]*\\.(create|update|delete|read|list|connect|disconnect|\\*)$"
+          // TODO remove operation, as it is only there to temporarily support the backend
+          "pattern": "^[A-Z][a-zA-Z]*\\.(create|update|delete|read|list|connect|disconnect|operation|\\*)$"
         },
         "schema": {
           "type": "string"
@@ -84,6 +104,10 @@ export default {
         "authenticated": {
           "type": "boolean",
           "default": false
+        },
+        "isEnabled": {
+          "type": "boolean",
+          "default": true
         },
         "query": {
           "type": "string"

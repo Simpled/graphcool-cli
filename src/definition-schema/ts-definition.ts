@@ -1,30 +1,17 @@
 export interface GraphcoolDefinition {
   types: string
-  permissions: Array<ModelPermission | RelationPermission>
+  permissions: Array<Permission>
   functions: FunctionDefinition[]
-  rootTokens: PermanentAuthToken[]
+  rootTokens: string[]
 }
 
-export interface ModelPermission {
+export interface Permission {
   description: string
-  isEnabled: boolean
+  isEnabled?: boolean
   operation: string
   authenticated: boolean
-  query?: Query
+  query?: string
   fields: string[]
-}
-
-export interface Query {
-  src: string
-}
-
-export interface RelationPermission {
-  isEnabled: boolean
-  relation: string
-  connect: boolean
-  disconnect: boolean
-  authenticated: boolean
-  query?: Query
 }
 
 export interface FunctionDefinition {
@@ -37,11 +24,17 @@ export interface FunctionDefinition {
   schema?: string
 }
 
-export type FunctionHandler = FunctionHandlerWebhook | string
+export interface FunctionHandler {
+  webhook?: FunctionHandlerWebhookSource
+  code?: {
+    src: string
+  }
+}
 
 export interface FunctionHandlerWebhook {
-  webhook?: FunctionHandlerWebhookSource
+  webhook: FunctionHandlerWebhookSource
 }
+
 export type FunctionHandlerWebhookSource = string | FunctionHandlerWebhookWithHeaders
 
 export interface FunctionHandlerWebhookWithHeaders {

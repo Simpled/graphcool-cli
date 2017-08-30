@@ -275,8 +275,7 @@ The new schema version is ${chalk.bold(newVersion)}.
 
 export const warnOverrideProjectFileMessage = `\
 You are about to override the local project. Make sure to save local changes that you want to preserve.
-Do you want to continue? [y|N]
-`
+Do you want to continue? [y|N] `
 
 export const multipleProjectFilesForPullMessage = (projectFiles: string[]) => `\
 Found ${projectFiles.length} project files. You can specify the one you want for which you want to pull the new schema, e.g.: ${chalk.cyan(`\`graphcool pull ${projectFiles[0]}\``)}

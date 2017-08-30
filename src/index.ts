@@ -22,6 +22,7 @@ import env from './io/Environment'
 import { pick } from 'lodash'
 import { InfoProps } from './commands/info'
 import out from './io/Out'
+import definition from './io/ProjectDefinition/ProjectDefinition'
 
 const Raven = require('raven')
 const debug = require('debug')('graphcool')
@@ -40,6 +41,7 @@ async function main() {
       process.exit(0)
     }
     case 'init': {
+      await definition.load()
       await checkAuth('init')
       await initCommand(props as InitProps)
       break
@@ -51,6 +53,7 @@ async function main() {
     // }
 
     case 'push': {
+      await definition.load()
       await checkAuth('auth')
       const projectId = env.getProjectId(pick<any, any>(props as PushPullCliProps, ['project', 'env']))
       if (!projectId) {
@@ -68,6 +71,7 @@ async function main() {
     }
 
     case 'pull': {
+      await definition.load()
       await checkAuth('auth')
       const projectId = env.getProjectId(pick<any, any>(props as PushPullCliProps, ['project', 'env']))
       const projectEnvironment = env.getEnvironment(projectId || '')
@@ -80,6 +84,7 @@ async function main() {
     }
 
     case 'delete': {
+      await definition.load()
       await checkAuth('auth')
       const projectId = env.getProjectId(props as DeleteCliProps)
       if (!projectId) {
@@ -96,6 +101,7 @@ async function main() {
     }
 
     case 'info': {
+      definition.load()
       await checkAuth('auth')
       const projectId = env.getProjectId(props as any)
       await infoCommand({projectId} as InfoProps)

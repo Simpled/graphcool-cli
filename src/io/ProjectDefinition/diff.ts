@@ -7,6 +7,7 @@ import {difference} from 'lodash'
 export interface ModuleDiff {
   definition?: string
   files: {[fileName: string]: Diff}
+  changed: boolean
 }
 
 export interface Diff {
@@ -17,9 +18,11 @@ export interface Diff {
 export function diff(a: GraphcoolModule, b: GraphcoolModule): ModuleDiff {
   let moduleDiff: any = {}
   let files = {}
+  let changed = false
 
   if (a.content !== b.content) {
     moduleDiff.definition = fileDiff(a.content, b.content)
+    changed = true
   }
 
   Object.keys(a.files).forEach(fileName => {
@@ -31,6 +34,7 @@ export function diff(a: GraphcoolModule, b: GraphcoolModule): ModuleDiff {
         diff: fileDiff(aFile, bFile || ''),
         action: bFile ? 'updated' : 'added'
       }
+      changed = true
     }
   })
 
@@ -41,26 +45,34 @@ export function diff(a: GraphcoolModule, b: GraphcoolModule): ModuleDiff {
       diff: fileDiff(file, ''),
       action: 'removed'
     }
+    changed = true
   })
 
   moduleDiff.files = files
+  moduleDiff.changed = changed
 
   return moduleDiff
 }
 
 export function printDiff(diff: ModuleDiff) {
-  if (diff.definition) {
-    console.log(`${chalk.bold('graphcool.yml')}`)
-    console.log(diff.definition)
-    console.log()
-  }
+  if (diff.changed) {
+    console.log(chalk.bold('\nChanges since last pull:\n'))
+    if (diff.definition) {
+      console.log(`${chalk.dim('graphcool.yml')}`)
+      console.log(diff.definition)
+      console.log()
+    }
 
-  Object.keys(diff.files).forEach(fileName => {
-    const fileDiff = diff.files[fileName]
-    console.log(`${chalk.bold(fileName)}`)
-    console.log(fileDiff)
-    console.log()
-  })
+    Object.keys(diff.files).forEach(fileName => {
+      const fileDiff = diff.files[fileName]
+
+      console.log(`${chalk.dim(fileName)}`)
+      console.log(fileDiff.diff)
+      console.log()
+    })
+  } else {
+    console.log('Already up-to-date.')
+  }
 }
 
 function fileDiff(a: string, b: string) {

@@ -17,9 +17,9 @@ class Out {
   constructor() {
     let out: (msg: string) => void
     let err: (msg: string) => void
-    if (process.env.NODE_ENV === 'test') {
-      out = process.stdout.write
-      err = process.stderr.write
+    if (process.env.NODE_ENV !== 'test') {
+      out = process.stdout.write.bind(process.stdout)
+      err = process.stderr.write.bind(process.stderr)
     } else {
       out = (message: string) => fs.appendFileSync('test.out', message)
       err = (message: string) => fs.appendFileSync('test.out', message)
@@ -29,6 +29,9 @@ class Out {
   }
 
   write(message: string): void {
+    if (typeof message !== 'string') {
+      message = JSON.stringify(message, null, 2)
+    }
     this.out(message)
   }
 

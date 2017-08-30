@@ -12,7 +12,7 @@ export default async function projectToFs(project: ProjectDefinition, outputDir:
 async function moduleToFs(module: GraphcoolModule, outputDir: string) {
   const ymlPath = path.join(outputDir, 'graphcool.yml')
   fs.writeFileSync(ymlPath, module.content)
-  console.log(`Written to ${ymlPath}`)
+  console.log(`Written to graphcool.yml`)
 
   for (const relativePath in module.files) {
     const content = module.files[relativePath]
@@ -29,6 +29,6 @@ async function moduleToFs(module: GraphcoolModule, outputDir: string) {
 
     mkdirp.sync(dir)
     fs.writeFileSync(filePath, content)
-    console.log(`Written to ${filePath}`)
+    console.log(`Written to ${relativePath}`)
   }
 }

@@ -26,6 +26,7 @@ export default async (props: PullProps): Promise<void> => {
   let envName = props.envName || 'dev'
   let projectInfo: ProjectInfo
   const newProject = !definition.definition
+  let changed = false
 
   try {
     out.startSpinner(`${fetchingProjectDataMessage}`)
@@ -33,20 +34,23 @@ export default async (props: PullProps): Promise<void> => {
     out.stopSpinner()
 
     if (!newProject && !props.force) {
-      printDiff(diff(definition.definition.modules[0], projectInfo.projectDefinition.modules[0]))
-      out.write(warnOverrideProjectFileMessage)
-      // exits if there it no valid input
-      await waitForInput()
-    }
+      const projectDiff = diff(definition.definition.modules[0], projectInfo.projectDefinition.modules[0])
+      printDiff(projectDiff)
+      if (projectDiff.changed) {
+        out.write(warnOverrideProjectFileMessage)
+        // exits if there it no valid input
+        await waitForInput()
 
-    definition.set(projectInfo.projectDefinition)
-    await definition.save()
-    await env.setEnv(envName, {projectId, version: projectInfo.version})
-    if (newProject) {
-      env.setDefault(envName)
+        definition.set(projectInfo.projectDefinition)
+        await definition.save()
+        await env.setEnv(envName, {projectId, version: projectInfo.version})
+        if (newProject) {
+          env.setDefault(envName)
+        }
+        env.save()
+        console.log(`Saved new project, environment name: ${envName}, project id: "${projectId}"`)
+      }
     }
-    env.save()
-    console.log(`Saved new project, environment name: ${envName}, project id: "${projectId}"`)
   } catch (e) {
     out.stopSpinner()
     if (e.errors) {

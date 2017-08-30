@@ -9,7 +9,9 @@ class ProjectDefinitionClass {
   definition: ProjectDefinition
 
   public async load() {
-    this.definition = await fsToProject(process.cwd())
+    if (fs.existsSync(path.join(process.cwd(), 'graphcool.yml'))) {
+      this.definition = await fsToProject(process.cwd())
+    }
   }
 
   public async save() {
@@ -21,10 +23,6 @@ class ProjectDefinitionClass {
   }
 }
 
-
 const definition = new ProjectDefinitionClass()
-if (fs.existsSync(path.join(process.cwd(), 'graphcool.yml'))) {
-  // definition.load()
-}
 
 export default definition

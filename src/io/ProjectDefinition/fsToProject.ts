@@ -1,8 +1,13 @@
 import * as path from 'path'
 import * as fs from 'fs'
+import * as chalk from 'chalk'
 import { ProjectDefinition, GraphcoolModule } from '../../types'
 import { readDefinition } from './yaml'
 import { FunctionDefinition, GraphcoolDefinition } from '../../definition-schema/ts-definition'
+
+interface ErrorMessage {
+  message: string
+}
 
 export default async function fsToProject(inputDir: string): Promise<ProjectDefinition> {
 
@@ -15,22 +20,38 @@ export default async function fsToProject(inputDir: string): Promise<ProjectDefi
   }
 
   let files = {}
+  let errors: ErrorMessage[] = []
 
   const definition: GraphcoolDefinition = await readDefinition(content)
+  const typesPath = path.join(inputDir, definition.types)
 
-  const databaseSchema = fs.readFileSync(path.join(inputDir, definition.types), 'utf-8')
-  files = {
-    ...files,
-    [definition.types]: databaseSchema,
+  if (fs.existsSync(typesPath)) {
+    const types = fs.readFileSync(typesPath, 'utf-8')
+    files = {
+      ...files,
+      [definition.types]: types,
+    }
+  } else {
+    errors.push({
+      message: `The types definition file "${typesPath}" could not be found.`,
+    })
   }
 
   if (definition.permissions) {
-    definition.permissions.forEach(modelPermission => {
-      if (modelPermission.query) {
-        const permissionQuery = fs.readFileSync(path.join(inputDir, modelPermission.query.src), 'utf-8')
-        files = {
-          ...files,
-          [modelPermission.query.src]: permissionQuery,
+    definition.permissions.forEach(permission => {
+
+      if (permission.query && isGraphQLFile(permission.query)) {
+        const queryPath = path.join(inputDir, permission.query)
+        if (fs.existsSync(queryPath)) {
+          const permissionQuery = fs.readFileSync(queryPath, 'utf-8')
+          files = {
+            ...files,
+            [permission.query]: permissionQuery,
+          }
+        } else {
+          errors.push({
+            message: `The file ${permission.query} for permission query ${permission.operation} does not exist`,
+          })
         }
       }
     })
@@ -39,33 +60,65 @@ export default async function fsToProject(inputDir: string): Promise<ProjectDefi
   if (definition.functions) {
     Object.keys(definition.functions).forEach(funcName => {
       const func: FunctionDefinition = definition.functions[funcName]
-      if (func.handler.code) {
-        const functionCode = fs.readFileSync(path.join(inputDir, func.handler.code.src), 'utf-8')
-        files = {
-          ...files,
-          [func.handler.code.src]: functionCode,
+      if (func.handler.code && func.handler.code.src) {
+        if (!isFunctionFile(func.handler.code.src)) {
+          errors.push({
+            message: `The handler ${func.handler.code.src} for function ${funcName} is not a valid function path. It must end with .js and be in the current working directory.`
+          })
+        }
+        const handlerPath = path.join(inputDir, func.handler.code.src)
+        if (fs.existsSync(handlerPath)) {
+          const functionCode = fs.readFileSync(handlerPath, 'utf-8')
+          files = {
+            ...files,
+            [func.handler.code.src]: functionCode,
+          }
+        } else {
+          errors.push({
+            message: `The file ${func.handler.code.src} for function ${funcName} does not exist`,
+          })
         }
       }
 
-      if (func.serversideSubscription) {
-        if (func.serversideSubscription.subscriptionQuery) {
-          const file = fs.readFileSync(path.join(inputDir, func.serversideSubscription.subscriptionQuery.src), 'utf-8')
-          files = {
-            ...files,
-            [func.serversideSubscription.subscriptionQuery.src]: file,
-          }
-        }
+      if (func.query && isGraphQLFile(func.query)) {
+        const queryPath = path.join(inputDir, func.query)
 
-        if (func.serversideSubscription.schemaExtension) {
-          const file = fs.readFileSync(path.join(inputDir, func.serversideSubscription.schemaExtension.src), 'utf-8')
+        if (fs.existsSync(queryPath)) {
+          const file = fs.readFileSync(queryPath, 'utf-8')
           files = {
             ...files,
-            [func.serversideSubscription.schemaExtension.src]: file,
+            [func.query]: file,
           }
+        } else {
+          errors.push({
+            message: `The file ${func.handler} for the subscription query of function ${funcName} does not exist`,
+          })
         }
       }
 
+      if (func.schema && isGraphQLFile(func.schema)) {
+        const queryPath = path.join(inputDir, func.schema)
+
+        if (fs.existsSync(queryPath)) {
+          const file = fs.readFileSync(queryPath, 'utf-8')
+          files = {
+            ...files,
+            [func.schema]: file,
+          }
+        } else {
+          errors.push({
+            message: `The file ${func.handler} for the schema extension of function ${funcName} does not exist`,
+          })
+        }
+      }
     })
+  }
+
+  if (errors.length > 0) {
+    console.log(chalk.bold('The following errors occured while reading the graphcool.yml project definition:'))
+    const messages = errors.map(e => `  ${chalk.red(e.message)}`).join('\n')
+    console.log(messages + '\n')
+    process.exit(1)
   }
 
   return {
@@ -75,3 +128,12 @@ export default async function fsToProject(inputDir: string): Promise<ProjectDefi
     }]
   }
 }
+
+function isFile(type) {
+  return content => {
+    return new RegExp(`\.${type}$`).test(content) && !content.startsWith('../')
+  }
+}
+
+const isGraphQLFile = isFile('graphql')
+const isFunctionFile = isFile('js')
