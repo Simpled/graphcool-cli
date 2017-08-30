@@ -10,6 +10,7 @@ export const usageRoot = () => `
     env           Manage project environments
     push          Push project file changes
     pull          Download the latest project file
+    test          Test a local function or permission
     import        Import project data
     export        Export project data
     logs          View logs
@@ -34,6 +35,39 @@ export const usageRoot = () => `
   ${chalk.gray('-')} Update live project with local changes
     ${chalk.cyan('$ graphcool push')}
 
+`
+
+export const usageTest = `
+  Usage: graphcool test COMMAND
+  
+  Test functions or permissions
+  
+  ${chalk.dim('Commands:')}
+    function         Test a function
+    permission       Test a permission
+  
+  ${chalk.dim('Options:')}
+    -h, --help  Output usage information
+  
+`
+
+export const usageTestFunction = `
+  Usage: graphcool test function [options]
+  
+  Tests a function
+  
+  Options:
+    -f, --function <name>      Function name
+    -e, --event <event-json>   JSON for example event (optional)
+`
+
+export const usageTestPermission = `
+  Usage: graphcool test permission [options]
+  
+  Tests a permission
+  
+  Options:
+    -o, --operation <operation-name>  
 `
 
 export const usageEnvironment = `

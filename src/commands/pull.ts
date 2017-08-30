@@ -50,6 +50,16 @@ export default async (props: PullProps): Promise<void> => {
         env.save()
         out.write(`\n\nPulled project with id "${projectId}" and environment "${envName}"`)
       }
+    } else if (newProject) {
+      definition.set(projectInfo.projectDefinition)
+      out.write('Checking out new project...')
+      await definition.save()
+      await env.setEnv(envName, {projectId, version: projectInfo.version})
+      if (newProject) {
+        env.setDefault(envName)
+      }
+      env.save()
+      out.write(`\n\nPulled project with id "${projectId}" and environment "${envName}"`)
     }
   } catch (e) {
     out.stopSpinner()
