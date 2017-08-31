@@ -117,14 +117,15 @@ export const usageDefaultEnvironment = `
 export const usageInit = `
   Usage: graphcool init [options]
   
-  Create a new project definition and environment from scratch or based on an existing GraphQL schema.
+  Create a new project definition and environment from scratch or based on an existing Graphcool definition.
   
   Options:
-    -n, --name <name>          Project name
-    -a, --alias <alias>        Project alias
-    -e, --env <environment>    Local environment name for the project (e.g. "dev" or "production")
-    -r, --region <region>      AWS Region (options: us-west-2 (default), eu-west-1, ap-northeast-1)
-    -h, --help                 Output usage information
+    -c, --copy <id | alias>  ID or alias of the project to be copied
+    -n, --name <name>        Project name
+    -a, --alias <alias>      Project alias
+    -e, --env <environment>  Local environment name for the project (e.g. "dev" or "production")
+    -r, --region <region>    AWS Region (options: us-west-2 (default), eu-west-1, ap-northeast-1)
+    -h, --help               Output usage information
       
   ${chalk.dim('Examples:')}
   

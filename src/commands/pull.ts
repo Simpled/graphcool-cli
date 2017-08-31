@@ -3,15 +3,14 @@ import {
   warnOverrideProjectFileMessage
 } from '../utils/constants'
 import out from '../io/Out'
-import { interactiveProjectSelection } from '../utils/projectSelection'
+import { ProjectSelection } from '../utils/components/ProjectSelection'
 import { ProjectEnvironment, ProjectInfo } from '../types'
 import definition from '../io/ProjectDefinition/ProjectDefinition'
 import client from '../io/Client'
 import { diff, printDiff } from '../io/ProjectDefinition/diff'
 import { generateErrorOutput, parseErrors } from '../utils/errors'
 import env from '../io/Environment'
-
-const {terminal} = require('terminal-kit')
+import Prompt from '../utils/components/Prompt'
 
 interface PullProps {
   projectId: string | null
@@ -22,7 +21,7 @@ interface PullProps {
 
 export default async (props: PullProps): Promise<void> => {
 
-  let projectId = props.projectId || await interactiveProjectSelection()
+  let projectId = props.projectId || await ProjectSelection()
   let envName = props.envName || 'dev'
   let projectInfo: ProjectInfo
   const newProject = !definition.definition
@@ -37,9 +36,7 @@ export default async (props: PullProps): Promise<void> => {
       const projectDiff = diff(definition.definition.modules[0], projectInfo.projectDefinition.modules[0])
       printDiff(projectDiff)
       if (projectDiff.changed) {
-        out.write(warnOverrideProjectFileMessage)
-        // exits if there it no valid input
-        await waitForInput()
+        await Prompt(warnOverrideProjectFileMessage)
 
         definition.set(projectInfo.projectDefinition)
         await definition.save(Object.keys(projectDiff.files))
@@ -71,18 +68,4 @@ export default async (props: PullProps): Promise<void> => {
       throw e
     }
   }
-}
-
-function waitForInput() {
-  terminal.grabInput(true)
-
-  return new Promise(resolve => {
-    terminal.on('key', function (name) {
-      if (name !== 'y') {
-        process.exit(0)
-      }
-      terminal.grabInput(false)
-      resolve()
-    })
-  })
 }

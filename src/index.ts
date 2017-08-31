@@ -10,9 +10,9 @@ import pullCommand from './commands/pull'
 import initCommand, { InitProps } from './commands/init'
 import exportCommand, { ExportProps } from './commands/export'
 import quickstartCommand from './commands/quickstart'
-import deleteCommand, { DeleteCliProps, DeleteProps } from './commands/delete'
+import deleteCommand, { DeleteCliProps } from './commands/delete'
 import authCommand, { AuthProps } from './commands/auth'
-import infoCommand from './commands/info'
+import infoCommand, { InfoProps } from './commands/info'
 import { parseCommand } from './utils/parseCommand'
 import { checkAuth } from './utils/auth'
 import { GraphcoolAuthServer } from './io/GraphcoolAuthServer'
@@ -20,12 +20,10 @@ import { noDefaultEnvironmentProvidedMessage, sentryDSN, } from './utils/constan
 import { usageRoot, } from './utils/usage'
 import env from './io/Environment'
 import { pick } from 'lodash'
-import { InfoProps } from './commands/info'
 import out from './io/Out'
 import definition from './io/ProjectDefinition/ProjectDefinition'
 
 const Raven = require('raven')
-const debug = require('debug')('graphcool')
 const {version} = require('../../package.json')
 
 async function main() {
@@ -46,11 +44,6 @@ async function main() {
       await initCommand(props as InitProps)
       break
     }
-
-    // case 'interactiveInit': {
-    //   await interactiveInitCommand(props as InteractiveInitProps)
-    //   break
-    // }
 
     case 'push': {
       await definition.load()

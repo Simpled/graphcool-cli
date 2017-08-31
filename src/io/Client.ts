@@ -201,7 +201,6 @@ class Client {
                 node {
                   id
                   name
-                  schema
                   alias
                   version
                   region

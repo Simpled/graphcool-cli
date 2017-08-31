@@ -1,6 +1,6 @@
 import { AuthTrigger } from '../types'
 import { GraphcoolAuthServer } from '../io/GraphcoolAuthServer'
-import authCommand, { AuthProps } from '../commands/auth'
+import authCommand from '../commands/auth'
 import config from '../io/GraphcoolRC'
 
 export async function checkAuth(authTrigger: AuthTrigger): Promise<boolean> {

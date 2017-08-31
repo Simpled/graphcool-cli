@@ -16,7 +16,6 @@ export type Command =
   'auth'
   | 'push'
   | 'init'
-  | 'interactiveInit'
   | 'export'
   | 'pull'
   | 'info'
@@ -33,7 +32,6 @@ export type Command =
 
 export type CommandProps =
   AuthProps
-  // | CloneProps
   | ConsoleProps
   | DeleteCliProps
   | ExportCliProps
@@ -44,7 +42,6 @@ export type CommandProps =
   | PushPullCliProps
   | QuickstartProps
   | UsageProps
-// | InteractiveInitProps
 
 interface UsageProps {
   command: Command

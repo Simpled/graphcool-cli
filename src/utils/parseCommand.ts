@@ -6,7 +6,8 @@ import client from '../io/client'
 
 export async function parseCommand(args: string[], version: string): Promise<CommandInstruction> {
   const instruction = getInstruction(args)
-  await client.checkStatus(instruction)
+  // TODO integrate this into client calls
+  client.checkStatus(instruction)
   return instruction
 }
 
@@ -39,22 +40,13 @@ function getInstruction(args: string[]): CommandInstruction {
       const name = argv['name'] || argv['n']
       const alias = argv['alias'] || argv['a']
       const region = argv['region'] || argv['r']
+      const env = argv['env'] || argv['e']
       // if there are exactly 2 argv's, use the 2nd argument as an alternative for the schemaUrl
-      const schemaUrl = argv['schema'] || argv['s'] || argv.length === 2 && argv._[1]
       const copyProjectId = argv['copy'] || argv['c']
-      const copyOptions = argv['copy-options']
-      const outputPath = argv['output'] || argv['o']
 
-      if (!schemaUrl && !copyProjectId) {
-        return {
-          command: 'interactiveInit',
-          props: {name, alias, outputPath, region}
-        }
-      } else {
-        return {
-          command: 'init',
-          props: {name, alias, schemaUrl, copyProjectId, copyOptions, region, outputPath}
-        }
+      return {
+        command: 'init',
+        props: {name, alias, copyProjectId, region, env}
       }
     }
 
