@@ -78,7 +78,7 @@ export default {
           "type": "string",
           // (modelName.(create|read|list|update|delete) | relationName.(connect|disconnect))
           // TODO remove operation, as it is only there to temporarily support the backend
-          "pattern": "^[A-Z][a-zA-Z]*\\.(create|update|delete|read|list|connect|disconnect|operation|\\*)$"
+          "pattern": "^[A-Z][a-zA-Z0-9]*\\.(create|update|delete|read|list|connect|disconnect|operation|\\*)$"
         },
         "schema": {
           "type": "string"
@@ -99,7 +99,7 @@ export default {
         "operation": {
           "type": "string",
           // (modelName.(create|read|list|update|delete) | relationName.(connect|disconnect))
-          "pattern": "^[A-Z][a-zA-Z]*\\.(create|update|delete|read|list|connect|disconnect|\\*)$"
+          "pattern": "^[A-Z][a-zA-Z0-9]*\\.(create|update|delete|read|list|connect|disconnect|\\*)$"
         },
         "authenticated": {
           "type": "boolean",

@@ -198,11 +198,11 @@ Pushing your project...`
 
 
 export const noActionRequiredMessage = `\
- ${chalk.green(figures.tick)} Identical schema, no action required.
+ ${chalk.green(figures.tick)} Identical project definition, no action required.
 `
 
 export const migrationPerformedMessage = `\
- ${chalk.green(figures.tick)} Your schema was successfully updated. Here are the changes:
+ ${chalk.green(figures.tick)} Your project was successfully updated. Here are the changes:
 `
 
 export const migrationErrorMessage = `\

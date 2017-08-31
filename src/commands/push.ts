@@ -44,34 +44,34 @@ export default async ({force, projectEnvironment: {projectId, version}, envName}
       throw new Error(remoteSchemaAheadMessage(projectInfo.version, version))
     }
 
-    const migrationResult: any = await client.push(projectId, force, false, version, definition.definition)
+    const migrationResult  = await client.push(projectId, force, false, version, definition.definition)
 
-    console.log(JSON.stringify(migrationResult, null, 2))
+    definition.set(migrationResult.projectDefinition)
+    definition.save(undefined, true)
 
     out.stopSpinner()
 
     // no action required
-    if ((!migrationResult.messages || migrationResult.messages.length === 0) && (!migrationResult.errors || migrationResult.errors.length === 0)) {
+    if ((!migrationResult.migrationMessages || migrationResult.migrationMessages.length === 0) && (!migrationResult.errors || migrationResult.errors.length === 0)) {
       out.write(noActionRequiredMessage)
       return
     }
 
     // migration successful
-    else if (migrationResult.messages.length > 0 && migrationResult.errors.length === 0) {
+    else if (migrationResult.migrationMessages.length > 0 && migrationResult.errors.length === 0) {
       const migrationMessage = migrationPerformedMessage
 
       out.write(`${migrationMessage}`)
-      printMigrationMessages(migrationResult.messages)
+      printMigrationMessages(migrationResult.migrationMessages)
       out.write(`\n`)
 
-      // update project file if necessary
 
       env.setVersion(envName, migrationResult.newVersion)
       env.save()
     }
 
     // can't do migration because of issues with schema
-    else if (migrationResult.messages.length === 0 && migrationResult.errors.length > 0) {
+    else if (migrationResult.migrationMessages.length === 0 && migrationResult.errors.length > 0) {
       out.write(`${migrationErrorMessage}`)
       printMigrationErrors(migrationResult.errors)
       out.write(`\n`)

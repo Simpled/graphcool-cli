@@ -16,7 +16,7 @@ import { generateErrorOutput, parseErrors } from '../utils/errors'
 const {terminal} = require('terminal-kit')
 
 export interface DeleteProps {
-  projectId: string
+  projectId: string | null
 }
 
 export interface DeleteCliProps {

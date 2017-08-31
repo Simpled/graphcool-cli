@@ -70,7 +70,7 @@ class Environment {
 
   }
 
-  public getProjectId({projectId, env}: {projectId?: string, env?: string}): string | null {
+  public getProjectId({projectId, env, skipDefault}: {projectId?: string, env?: string, skipDefault?: boolean}): string | null {
     if (projectId) {
       return projectId
     }
@@ -85,7 +85,7 @@ class Environment {
       return environment.projectId
     }
 
-    if (this.default) {
+    if (this.default && !skipDefault) {
       return this.default.projectId
     }
 

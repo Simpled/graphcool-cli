@@ -91,7 +91,7 @@ export default async function fsToProject(inputDir: string): Promise<ProjectDefi
           }
         } else {
           errors.push({
-            message: `The file ${func.handler} for the subscription query of function ${funcName} does not exist`,
+            message: `The file ${func.query} for the subscription query of function ${funcName} does not exist`,
           })
         }
       }

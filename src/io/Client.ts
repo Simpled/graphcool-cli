@@ -12,6 +12,8 @@ import {
 import { getFastestRegion } from '../utils/ping'
 import { omit } from 'lodash'
 import config from './GraphcoolRC'
+const debug = require('debug')('graphcool')
+
 
 const REMOTE_PROJECT_FRAGMENT = `
   fragment RemoteProject on Project {
@@ -32,11 +34,19 @@ class Client {
   }
 
   updateClient() {
-    this.client = new GraphQLClient(systemAPIEndpoint, {
+    const client = new GraphQLClient(systemAPIEndpoint, {
       headers: {
         Authorization: `Bearer ${config.token}`
       }
     })
+
+    this.client = {
+      request: function(mutation, variables) {
+        debug(mutation)
+        debug(variables)
+        return client.request(mutation, variables).then(data => {debug(data); return data})
+      }
+    } as any
   }
 
   async createProject(name: string, projectDefinition: ProjectDefinition, alias?: string, region?: string): Promise<ProjectInfo> {
@@ -115,6 +125,7 @@ class Client {
             schema
             alias
             version
+            projectDefinitionWithFileContent
           }
         }
       }
@@ -126,6 +137,7 @@ class Client {
       errors: migrateProject.errors,
       newVersion: migrateProject.project.version,
       newSchema: migrateProject.project.schema,
+      projectDefinition: this.getProjectDefinition(migrateProject.project as any).projectDefinition,
     }
   }
 
@@ -161,6 +173,7 @@ class Client {
             name
             alias
             version
+            projectDefinitionWithFileContent
           }
         }
       }
@@ -173,11 +186,14 @@ class Client {
       config: JSON.stringify(config),
     })
 
+    debug()
+
     return {
       migrationMessages: push.migrationMessages,
       errors: push.errors,
       newVersion: push.project.version,
       newSchema: push.project.schema,
+      projectDefinition: this.getProjectDefinition(push.project as any).projectDefinition,
     }
   }
 

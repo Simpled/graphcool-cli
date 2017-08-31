@@ -41,6 +41,7 @@ async function main() {
     case 'init': {
       await definition.load()
       await checkAuth('init')
+      const projectId = env.getProjectId({projectId: (props as any).copyProjectId,})
       await initCommand(props as InitProps)
       break
     }
@@ -79,10 +80,7 @@ async function main() {
     case 'delete': {
       await definition.load()
       await checkAuth('auth')
-      const projectId = env.getProjectId(props as DeleteCliProps)
-      if (!projectId) {
-        throw new Error(noDefaultEnvironmentProvidedMessage)
-      }
+      const projectId = env.getProjectId({...props, skipDefault: true})
       await deleteCommand({projectId})
       break
     }

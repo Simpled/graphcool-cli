@@ -46,6 +46,9 @@ export default async (props: PullProps): Promise<void> => {
         }
         env.save()
         out.write(`\n\nPulled project with id "${projectId}" and environment "${envName}"`)
+      } else {
+        await env.setEnv(envName, {projectId, version: projectInfo.version})
+        env.save()
       }
     } else if (newProject) {
       definition.set(projectInfo.projectDefinition)

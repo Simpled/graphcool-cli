@@ -41,7 +41,7 @@ function getSymbolForMigrationActionType(type: MigrationActionType): string {
 }
 
 
-export function printMigrationErrors(errors: [MigrationErrorMessage]) {
+export function printMigrationErrors(errors: MigrationErrorMessage[]) {
   const indentation = spaces(2)
   errors.forEach(error => {
     const outputMessage = makePartsEnclodesByCharacterBold(error.description, `\``)

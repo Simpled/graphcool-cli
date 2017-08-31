@@ -115,6 +115,7 @@ export interface MigrationResult {
   errors: MigrationErrorMessage[]
   newVersion: number
   newSchema: string
+  projectDefinition: ProjectDefinition
 }
 
 export interface APIError {
