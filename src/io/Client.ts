@@ -41,10 +41,9 @@ class Client {
 
   async createProject(name: string, projectDefinition: ProjectDefinition, alias?: string, region?: string): Promise<ProjectInfo> {
     const mutation = `\
-      mutation addProject($schema: String!, $name: String!, $alias: String, $region: Region) {
+      mutation addProject($name: String!, $alias: String, $region: Region) {
         addProject(input: {
           name: $name,
-          schema: $schema,
           alias: $alias,
           region: $region,
           clientMutationId: "static"
@@ -70,6 +69,8 @@ class Client {
     }
 
     const {addProject: {project}} = await this.client.request<{addProject: {project: RemoteProject}}>(mutation, variables)
+
+    await this.push(project.id, true, false, project.version, projectDefinition)
 
     // TODO set project definition, should be possibility in the addProject mutation
 

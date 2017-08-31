@@ -18,27 +18,29 @@ export default async function Selection(text: string, options: string[][]): Prom
 
   await new Promise(resolve => {
     terminal.on('key', async (name: string) => {
-      currentIndex = await handleKeyEvent(name, currentIndex, options, resolve)
+      currentIndex = await handleKeyEvent(name, currentIndex, options, resolve, text)
     })
   })
 
   return currentIndex
 }
 
-async function handleKeyEvent(name: string, currentIndex: number, options: string[][], callback: () => void): Promise<number> {
+async function handleKeyEvent(name: string, currentIndex: number, options: string[][], callback: () => void, text: string): Promise<number> {
   switch (name) {
+    case 'j':
     case 'DOWN': {
       currentIndex = (currentIndex + 1) % options.length
       rerender(options, currentIndex)
       break
     }
+    case 'k':
     case 'UP': {
       currentIndex = (currentIndex + options.length - 1) % options.length
       rerender(options, currentIndex)
       break
     }
     case 'ENTER': {
-      handleSelect()
+      handleSelect(options, text)
       callback()
       break
     }
@@ -57,10 +59,12 @@ async function handleKeyEvent(name: string, currentIndex: number, options: strin
   return currentIndex
 }
 
-function handleSelect(): void {
+function handleSelect(options: string[][], text: string) {
   terminal.restoreCursor()
   terminal.eraseDisplayBelow()
   terminal.hideCursor(false)
+  terminal.grabInput(false)
+  // clear(options, text)
   out.write('\n')
 }
 
@@ -69,8 +73,9 @@ function rerender(options: string[][], currentIndex: number): void {
   render(options, currentIndex)
 }
 
-function clear(options: string[][]) {
-  const lineCount = _.flatten(options).length - 1
+function clear(options: string[][], text?: string) {
+  const textLines = text ? text.split(/\n/g).length - 1 : 0
+  const lineCount = _.flatten(options).length - 1 + textLines
   terminal.up(lineCount)
   terminal.left(10000)
   terminal.eraseDisplayBelow()

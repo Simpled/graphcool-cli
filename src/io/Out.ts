@@ -62,8 +62,8 @@ class Out {
       debug(error.stack)
     } else if (error.stack) {
       const errorLines = error.stack!.split('\n')
-      const firstErrorLine = errorLines[0]
-      console.error(`${chalk.red(figures.cross)}  ${firstErrorLine}`)
+      const firstErrorLines = errorLines.slice(0,3).join('\n')
+      console.error(`${chalk.red(figures.cross)}  ${firstErrorLines}`)
       debug(error.stack)
     } else {
       console.error(JSON.stringify(error))

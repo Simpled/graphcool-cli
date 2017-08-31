@@ -14,8 +14,8 @@ class ProjectDefinitionClass {
     }
   }
 
-  public async save(files?: string[]) {
-    await projectToFs(this.definition, process.cwd(), files)
+  public async save(files?: string[], silent?: boolean) {
+    await projectToFs(this.definition, process.cwd(), files, silent)
   }
 
   public set(definition: ProjectDefinition) {

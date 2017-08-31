@@ -15,6 +15,7 @@ import client from '../io/Client'
 import { generateErrorOutput, parseErrors } from '../utils/errors'
 import definition from '../io/ProjectDefinition/ProjectDefinition'
 import generateName = require('sillyname')
+import InteractiveInit from '../utils/components/InteractiveInit'
 
 export interface InitProps {
   name?: string
@@ -23,9 +24,23 @@ export interface InitProps {
   outputPath?: string
   env?: string
   blank?: boolean
+  copyProjectId?: string
 }
 
 export default async (props: InitProps): Promise<void> => {
+
+  const newProject = !definition.definition
+
+  if (props.copyProjectId) {
+    const info = await client.fetchProjectInfo(props.copyProjectId)
+    definition.set(info.projectDefinition)
+  }
+
+  if (!definition.definition) {
+    const newDefinition = await InteractiveInit()
+    definition.set(newDefinition)
+  }
+
   // create new
   if (env.default && !props.env) {
     throw new Error(envExistsButNoEnvNameProvided(env.env))
@@ -45,7 +60,14 @@ export default async (props: InitProps): Promise<void> => {
     const project = await client.createProject(name, projectDefinition, props.alias, props.region)
 
     // add environment
-    await env.set(props.env || 'dev', project.id)
+    const newEnv = props.env || 'dev'
+    await env.set(newEnv, project.id)
+    definition.set(project.projectDefinition)
+
+    if (newProject) {
+      env.setDefault(newEnv)
+      definition.save(undefined, true)
+    }
     env.save()
 
     out.stopSpinner()

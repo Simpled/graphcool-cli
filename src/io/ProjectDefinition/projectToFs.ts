@@ -5,18 +5,22 @@ import * as mkdirp from 'mkdirp'
 import * as chalk from 'chalk'
 import out from '../Out'
 
-export default async function projectToFs(project: ProjectDefinition, outputDir: string, files?: string[]): Promise<any> {
+export default async function projectToFs(project: ProjectDefinition, outputDir: string, files?: string[], silent?: boolean): Promise<any> {
   for (const module of project.modules) {
-    await moduleToFs(module, outputDir, files)
+    await moduleToFs(module, outputDir, files, silent)
   }
 }
 
-async function moduleToFs(module: GraphcoolModule, outputDir: string, files?: string[]) {
-  out.write('\n')
+async function moduleToFs(module: GraphcoolModule, outputDir: string, files?: string[], silent?: boolean) {
+  if (!silent) {
+    out.write('\n')
+  }
   if ((files && files.includes('graphcool.yml') || !files)) {
     const ymlPath = path.join(outputDir, 'graphcool.yml')
     fs.writeFileSync(ymlPath, module.content)
-    out.write(chalk.bold(`\nWritten to graphcool.yml`))
+    if (!silent) {
+      out.write(chalk.bold(`\nWritten to graphcool.yml`))
+    }
   }
 
   const fileNames = files ? Object.keys(module.files).filter(f => files.includes(f)) : Object.keys(module.files)
@@ -36,6 +40,8 @@ async function moduleToFs(module: GraphcoolModule, outputDir: string, files?: st
 
     mkdirp.sync(dir)
     fs.writeFileSync(filePath, content)
-    out.write(chalk.bold(`\nWritten to ${relativePath}`))
+    if (!silent) {
+      out.write(chalk.bold(`\nWritten to ${relativePath}`))
+    }
   }
 }

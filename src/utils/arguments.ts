@@ -15,14 +15,14 @@ import {
 
 export function optionsForCommand(command: Command): string[] {
   switch (command) {
-    case 'init' || 'create':
-      return ['name', 'n', 'alias', 'a', 'region', 'r', 'schema', 's', 'copy', 'c', 'output', 'o', 'copy-options']
+    case 'init':
+      return ['name', 'n', 'alias', 'a', 'region', 'r', 'schema', 's', 'copy', 'c', 'env', 'e']
     case 'push':
-      return ['force', 'f']
+      return ['force', 'f', 'env', 'e']
     case 'delete':
-      return ['project', 'p']
+      return ['project', 'p', 'env', 'e']
     case 'pull':
-      return ['project', 'p', 'output', 'o', 'force', 'f']
+      return ['project', 'p', 'output', 'o', 'force', 'f', 'env', 'e']
     case 'auth':
       return ['token', 't']
   }
