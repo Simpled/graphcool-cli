@@ -46,9 +46,6 @@ export default async ({force, projectEnvironment: {projectId, version}, envName}
 
     const migrationResult  = await client.push(projectId, force, false, version, definition.definition)
 
-    definition.set(migrationResult.projectDefinition)
-    definition.save(undefined, true)
-
     out.stopSpinner()
 
     // no action required
@@ -68,6 +65,9 @@ export default async ({force, projectEnvironment: {projectId, version}, envName}
 
       env.setVersion(envName, migrationResult.newVersion)
       env.save()
+
+      definition.set(migrationResult.projectDefinition)
+      definition.save(undefined, true)
     }
 
     // can't do migration because of issues with schema

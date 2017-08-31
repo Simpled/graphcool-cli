@@ -206,7 +206,7 @@ export const migrationPerformedMessage = `\
 `
 
 export const migrationErrorMessage = `\
-There are issues with the new schema:
+There are issues with the new project definition:
 
 `
 
