@@ -19,6 +19,7 @@ export type Command =
   | 'export'
   | 'pull'
   | 'info'
+  | 'status'
   | 'console'
   | 'playground'
   | 'projects'

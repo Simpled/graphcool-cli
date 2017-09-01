@@ -15,6 +15,7 @@ export const usageRoot = () => `
     export        Export project data
     logs          View logs
     info          Print project info (environments, endpoints, ...)
+    status        Display difference between local and remote project versions
     playground    Open GraphQL Playground
     console       Open Graphcool Console in browser
     projects      List all projects

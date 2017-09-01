@@ -46,6 +46,7 @@ async function main() {
       break
     }
 
+    case 'status':
     case 'push': {
       await definition.load()
       await checkAuth('auth')
@@ -60,6 +61,7 @@ async function main() {
       await pushCommand({
         ...projectEnvironment,
         force: (props as any).force,
+        isDryRun: command === 'status',
       })
       break
     }

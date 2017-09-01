@@ -8,7 +8,7 @@ import {
   migrationErrorMessage,
   invalidProjectFileMessage,
   remoteSchemaAheadMessage,
-  potentialDataLossMessage
+  potentialDataLossMessage, potentialChangesMessage
 } from '../utils/constants'
 import out from '../io/Out'
 import client from '../io/Client'
@@ -26,9 +26,10 @@ export interface PushPullProps {
   force: boolean
   projectEnvironment: ProjectEnvironment
   envName: string
+  isDryRun: boolean
 }
 
-export default async ({force, projectEnvironment: {projectId, version}, envName}: PushPullProps): Promise<void> => {
+export default async ({force, projectEnvironment: {projectId, version}, envName, isDryRun}: PushPullProps): Promise<void> => {
   const projectInfo = await client.fetchProjectInfo(projectId)
   if (!projectInfo) {
     throw new Error(invalidProjectFileMessage)
@@ -44,7 +45,7 @@ export default async ({force, projectEnvironment: {projectId, version}, envName}
       throw new Error(remoteSchemaAheadMessage(projectInfo.version, version))
     }
 
-    const migrationResult  = await client.push(projectId, force, false, version, definition.definition)
+    const migrationResult  = await client.push(projectId, force, isDryRun, version, definition.definition)
 
     out.stopSpinner()
 
@@ -56,18 +57,22 @@ export default async ({force, projectEnvironment: {projectId, version}, envName}
 
     // migration successful
     else if (migrationResult.migrationMessages.length > 0 && migrationResult.errors.length === 0) {
-      const migrationMessage = migrationPerformedMessage
-
-      out.write(`${migrationMessage}`)
+      if (isDryRun) {
+        out.write(potentialChangesMessage)
+      } else {
+        out.write(migrationPerformedMessage)
+      }
       printMigrationMessages(migrationResult.migrationMessages)
       out.write(`\n`)
 
 
-      env.setVersion(envName, migrationResult.newVersion)
-      env.save()
+      if (!isDryRun) {
+        env.setVersion(envName, migrationResult.newVersion)
+        env.save()
 
-      definition.set(migrationResult.projectDefinition)
-      definition.save(undefined, true)
+        definition.set(migrationResult.projectDefinition)
+        definition.save(undefined, true)
+      }
     }
 
     // can't do migration because of issues with schema
