@@ -117,7 +117,8 @@ async function main() {
 
     case 'playground': {
       await checkAuth('auth')
-      await playgroundCommand(props as PlaygroundProps)
+      const projectId = await env.getProjectId(props as any)
+      await playgroundCommand({projectId} as PlaygroundProps)
       break
     }
 
