@@ -2,7 +2,7 @@ import * as os from 'os'
 import * as path from 'path'
 import * as chalk from 'chalk'
 import figures = require('figures')
-import { EnvironmentConfig, ProjectDefinition } from '../types'
+import { EnvironmentConfig, ProjectDefinition, ProjectEnvironment, ProjectInfo } from '../types'
 
 /*
  * Networking & URLs
@@ -236,12 +236,12 @@ An error occured while trying to fetch your projects.
  */
 
 export const endpointsMessage = (projectId: string) => `\
- The endpoints for your project are:
+The ${chalk.bold('endpoints')} for your project are:
 
-   Simple API:         https://api.graph.cool/simple/v1/${projectId}
-   Relay API:          https://api.graph.cool/relay/v1/${projectId}
-   Subscriptions API:  wss://subscriptions.graph.cool/v1/${projectId}
-   File API:           https://api.graph.cool/file/v1/${projectId}
+  Simple API:         https://api.graph.cool/simple/v1/${projectId}
+  Relay API:          https://api.graph.cool/relay/v1/${projectId}
+  Subscriptions API:  wss://subscriptions.graph.cool/v1/${projectId}
+  File API:           https://api.graph.cool/file/v1/${projectId}
 `
 
 export const multipleProjectFilesForEndpointsMessage = (projectFiles: string[]) => `\
@@ -521,3 +521,15 @@ type User implements Node {
   }]
 }
 
+
+export const infoMessage = (envName: string, env: ProjectEnvironment, info: ProjectInfo) => `\
+${chalk.bold('Local Environment')}
+default: ${envName}
+projectId: ${env.projectId}
+version: ${env.version}
+
+${chalk.bold('Remote Environment')}
+projectId: ${info.id}
+version: ${info.version}
+
+`

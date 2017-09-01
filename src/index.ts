@@ -95,7 +95,14 @@ async function main() {
       definition.load()
       await checkAuth('auth')
       const projectId = await env.getProjectId(props as any)
-      await infoCommand({projectId} as InfoProps)
+      if (!projectId) {
+        throw new Error(noDefaultEnvironmentProvidedMessage)
+      }
+      const projectEnvironment = env.getEnvironment(projectId)
+      if (!projectEnvironment) {
+        throw new Error(`In order to push you need to have project id ${projectId} in the local .graphcool.env`)
+      }
+      await infoCommand({projectId, ...projectEnvironment} as InfoProps)
       break
     }
 

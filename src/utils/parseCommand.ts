@@ -85,6 +85,7 @@ function getInstruction(args: string[]): CommandInstruction {
 
     case 'export':
     case 'console':
+    case 'info':
     case 'playground': {
       const env = argv['env'] || argv['e']
 
