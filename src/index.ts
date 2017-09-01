@@ -94,7 +94,6 @@ async function main() {
     }
 
     case 'info': {
-      definition.load()
       await checkAuth('auth')
       const projectId = await env.getProjectId(props as any)
       if (!projectId) {
