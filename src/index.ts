@@ -101,7 +101,8 @@ async function main() {
 
     case 'console': {
       await checkAuth('auth')
-      await consoleCommand(props as ConsoleProps)
+      const projectId = await env.getProjectId(props as any)
+      await consoleCommand({projectId} as ConsoleProps)
       break
     }
 
