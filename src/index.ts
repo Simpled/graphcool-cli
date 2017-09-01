@@ -22,6 +22,7 @@ import env from './io/Environment'
 import { pick } from 'lodash'
 import out from './io/Out'
 import definition from './io/ProjectDefinition/ProjectDefinition'
+import envCommand, { EnvProps } from './commands/env'
 
 const Raven = require('raven')
 const {version} = require('../../package.json')
@@ -129,6 +130,12 @@ async function main() {
 
     case 'auth': {
       await authCommand(props as AuthProps, new GraphcoolAuthServer('auth'))
+      break
+    }
+
+    case 'env': {
+      await checkAuth('auth')
+      await envCommand(props as EnvProps)
       break
     }
 

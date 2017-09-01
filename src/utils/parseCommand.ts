@@ -102,6 +102,13 @@ function getInstruction(args: string[]): CommandInstruction {
       }
     }
 
+    case 'env': {
+      return {
+        command,
+        props: argv._
+      }
+    }
+
     case 'auth': {
       const token = argv['token'] || argv['t']
 

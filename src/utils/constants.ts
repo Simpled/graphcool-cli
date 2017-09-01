@@ -533,3 +533,24 @@ projectId: ${info.id}
 version: ${info.version}
 
 `
+
+
+/**
+ * Environment
+ */
+
+export const envSet = (name: string, projectId: string) => `\
+Environment ${name} set to ${projectId}
+`
+
+export const envRename = (oldName: string, newName) => `\
+Renamed environment ${oldName} to ${newName}
+`
+
+export const envRemove = (envName: string) => `\
+Removed environment ${envName}
+`
+
+export const envDefault = (envName: string) => `\
+Successfully set ${envName} as the default environment
+`

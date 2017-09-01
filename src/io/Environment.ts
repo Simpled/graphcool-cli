@@ -63,11 +63,27 @@ class Environment {
   }
 
   public rename(oldName: string, newName: string) {
+    const oldEnv = this.env.environments[oldName]
 
+    if (!oldEnv) {
+      throw new Error(`Environment ${oldName} doesn't exist`)
+    }
+
+    delete this.env.environments[oldName]
+    if (this.env.default === oldName) {
+      this.setDefault(newName)
+    }
+    this.env.environments[newName] = oldEnv
   }
 
-  public remove(oldName: string, newName: string) {
+  public remove(envName: string) {
+    const oldEnv = this.env.environments[envName]
 
+    if (!oldEnv) {
+      throw new Error(`Environment ${envName} doesn't exist`)
+    }
+
+    delete this.env.environments[envName]
   }
 
   public async getProjectId({project, env, skipDefault}: {project?: string, env?: string, skipDefault?: boolean}): Promise<string | null> {

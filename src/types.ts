@@ -11,9 +11,11 @@ import { ProjectsProps } from './commands/projects'
 import { QuickstartProps } from './commands/quickstart'
 import { InfoCliProps } from './commands/info'
 import { PushPullCliProps } from './commands/push'
+import { EnvProps } from './commands/env'
 
 export type Command =
   'auth'
+  | 'env'
   | 'push'
   | 'init'
   | 'export'
@@ -43,6 +45,7 @@ export type CommandProps =
   | PushPullCliProps
   | QuickstartProps
   | UsageProps
+  | EnvProps
 
 interface UsageProps {
   command: Command
