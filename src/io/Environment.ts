@@ -86,6 +86,16 @@ class Environment {
     delete this.env.environments[envName]
   }
 
+  public deleteIfExist(projectIds: string[]) {
+    projectIds.forEach(projectId => {
+      const envName = Object.keys(this.env.environments).find(envName => this.env.environments[envName].projectId === projectId)
+      console.log('delete envName', envName)
+      if (envName) {
+        delete this.env.environments[envName]
+      }
+    })
+  }
+
   public async getProjectId({project, env, skipDefault}: {project?: string, env?: string, skipDefault?: boolean}): Promise<string | null> {
     if (project) {
       const projects = await client.fetchProjects()

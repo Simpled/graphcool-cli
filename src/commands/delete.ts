@@ -32,6 +32,8 @@ export default async (props: DeleteProps): Promise<void> => {
       await client.deleteProjects([props.projectId])
       out.stopSpinner()
       out.write(deletedProjectMessage([props.projectId]))
+      env.deleteIfExist([props.projectId])
+      env.save()
 
     } catch (e) {
       out.stopSpinner()
@@ -141,6 +143,8 @@ async function handleSelect(selectedIndices: number[], projects: Project[]): Pro
 
   try {
     await client.deleteProjects(projectIdsToDelete)
+    env.deleteIfExist(projectIdsToDelete)
+    env.save()
     out.stopSpinner()
     out.write(deletedProjectMessage(projectIdsToDelete))
 
