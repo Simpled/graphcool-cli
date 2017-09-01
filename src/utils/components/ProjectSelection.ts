@@ -1,5 +1,4 @@
 import client from '../../io/Client'
-import Selection from './Selection'
 
 const {terminal} = require('terminal-kit')
 
@@ -7,9 +6,8 @@ export async function ProjectSelection(): Promise<string> {
   const projects = await client.fetchProjects()
   const projectNames = projects.map(project => `${project.name} (${project.id})`)
 
-  // const selectedIndex = await Selection('', )
   const selectedIndex = await new Promise<number>(r => {
-    terminal.gridMenu(projectNames, {exitOnUnexpectedKey: true}, (err, res) => {
+    terminal.gridMenu(projectNames, (err, res) => {
       terminal( '\n' ).eraseLineAfter.green(
         "Selected project: %s\n" ,
         res.selectedText

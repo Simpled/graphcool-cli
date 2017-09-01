@@ -15,12 +15,17 @@ export default async function Selection(text: string, options: string[][]): Prom
   let currentIndex = 0
 
   render(options, currentIndex)
+  let resolved = false
 
   await new Promise(resolve => {
     terminal.on('key', async (name: string) => {
-      currentIndex = await handleKeyEvent(name, currentIndex, options, resolve, text)
+      if (!resolved) {
+        currentIndex = await handleKeyEvent(name, currentIndex, options, resolve, text)
+      }
     })
   })
+
+  resolved = true
 
   return currentIndex
 }
@@ -64,6 +69,10 @@ function handleSelect(options: string[][], text: string) {
   terminal.eraseDisplayBelow()
   terminal.hideCursor(false)
   terminal.grabInput(false)
+  terminal( '\n' ).eraseLineAfter.green(
+    ""
+  );
+
   // clear(options, text)
   out.write('\n')
 }

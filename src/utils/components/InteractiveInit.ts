@@ -4,6 +4,8 @@ import { ProjectDefinition } from '../../types'
 import Selection from './Selection'
 import client from '../../io/Client'
 import { ProjectSelection } from './ProjectSelection'
+const {terminal} = require('terminal-kit')
+
 
 export default async (): Promise<ProjectDefinition> => {
   const options = [
