@@ -70,9 +70,14 @@ class Environment {
 
   }
 
-  public getProjectId({projectId, env, skipDefault}: {projectId?: string, env?: string, skipDefault?: boolean}): string | null {
-    if (projectId) {
-      return projectId
+  public async getProjectId({project, env, skipDefault}: {project?: string, env?: string, skipDefault?: boolean}): Promise<string | null> {
+    if (project) {
+      const projects = await client.fetchProjects()
+      const foundProject = projects.find(p => p.id === project || p.alias === project)
+      if (!foundProject) {
+        throw new Error(`Project with alias or id "${project}" could not be found in this account`)
+      }
+      return foundProject.id
     }
 
     if (env) {

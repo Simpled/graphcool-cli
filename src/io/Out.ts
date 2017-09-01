@@ -57,17 +57,17 @@ class Out {
 
     // prevent the same error output twice
     const errorMessage = makePartsEnclodesByCharacterBold(`Error: ${error.message}`, `\``)
-    if (error.stack && !error.stack.startsWith(errorMessage!)) {
-      console.error(`${chalk.red(figures.cross)}  ${errorMessage}`)
-      debug(error.stack)
-    } else if (error.stack) {
-      const errorLines = error.stack!.split('\n')
-      const firstErrorLines = errorLines.slice(0,3).join('\n')
-      console.error(`${chalk.red(figures.cross)}  ${firstErrorLines}`)
-      debug(error.stack)
-    } else {
-      console.error(JSON.stringify(error))
-    }
+    console.error(`${chalk.red(figures.cross)}  ${errorMessage}`)
+    debug(error.stack)
+    // if (error.stack && !error.stack.startsWith(errorMessage!)) {
+    // } else if (error.stack) {
+    //   const errorLines = error.stack!.split('\n')
+    //   const firstErrorLines = errorLines.slice(0,3).join('\n')
+    //   console.error(`${chalk.red(figures.cross)}  ${firstErrorLines}`)
+    //   debug(error.stack)
+    // } else {
+    //   console.error(JSON.stringify(error))
+    // }
 
     console.error(`\n${setDebugMessage}\n${contactUsInSlackMessage}\n`)
 

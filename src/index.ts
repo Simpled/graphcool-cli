@@ -41,7 +41,7 @@ async function main() {
     case 'init': {
       await definition.load()
       await checkAuth('init')
-      const projectId = env.getProjectId({projectId: (props as any).copyProjectId,})
+      const projectId = (props as any).projectId
       await initCommand(props as InitProps)
       break
     }
@@ -49,7 +49,7 @@ async function main() {
     case 'push': {
       await definition.load()
       await checkAuth('auth')
-      const projectId = env.getProjectId(pick<any, any>(props as PushPullCliProps, ['project', 'env']))
+      const projectId = await env.getProjectId(pick<any, any>(props as PushPullCliProps, ['project', 'env']))
       if (!projectId) {
         throw new Error(noDefaultEnvironmentProvidedMessage)
       }
@@ -67,7 +67,7 @@ async function main() {
     case 'pull': {
       await definition.load()
       await checkAuth('auth')
-      const projectId = env.getProjectId(pick<any, any>(props as PushPullCliProps, ['project', 'env']))
+      const projectId = await env.getProjectId(pick<any, any>(props as PushPullCliProps, ['project', 'env']))
       const projectEnvironment = env.getEnvironment(projectId || '')
       await pullCommand({
         projectId,
@@ -80,7 +80,7 @@ async function main() {
     case 'delete': {
       await definition.load()
       await checkAuth('auth')
-      const projectId = env.getProjectId({...props, skipDefault: true})
+      const projectId = await env.getProjectId({...props, skipDefault: true})
       await deleteCommand({projectId})
       break
     }
@@ -94,7 +94,7 @@ async function main() {
     case 'info': {
       definition.load()
       await checkAuth('auth')
-      const projectId = env.getProjectId(props as any)
+      const projectId = await env.getProjectId(props as any)
       await infoCommand({projectId} as InfoProps)
       break
     }
