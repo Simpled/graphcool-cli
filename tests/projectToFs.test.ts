@@ -24,15 +24,6 @@ test('fs to project', async t => {
   t.deepEqual(mockDefinition, definition)
 })
 
-// test('project to fs', async t => {
-//   await projectToFs(mockDefinition, projectToFsDir)
-//   const absoluteFileNames: string[] = await globby(projectToFsDir + '/**/*.*')
-//   const fileNames = absoluteFileNames.map(f => f.slice(projectToFsDir.length, f.length))
-//   const files = absoluteFileNames.map(fileName => fs.readFileSync(fileName, 'utf-8'))
-//   console.log(fileNames)
-//   t.is(1,1)
-// })
-
 test.after(() => {
   rimraf.sync(projectToFsDir)
   // rimraf.sync(projectToFsDirChanged)

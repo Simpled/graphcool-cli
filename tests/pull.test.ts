@@ -1,7 +1,7 @@
 import test from 'ava'
 import pullCommand from '../src/commands/pull'
 import client from '../src/io/Client'
-import { project, projects } from './fixtures/new-mock-data'
+import { defaultVolume, project, projects } from './fixtures/new-mock-data'
 import out from '../src/io/Out'
 import fs, { reset } from '../src/io/fs'
 import definition from '../src/io/ProjectDefinition/ProjectDefinition'
@@ -9,6 +9,7 @@ import env from '../src/io/Environment'
 import config from '../src/io/GraphcoolRC'
 const fetchMock = require('fetch-mock')
 const debug = require('debug')('graphcool')
+import {vol} from 'memfs'
 
 test.before(() => {
   client.mock(project)
@@ -41,6 +42,9 @@ Written to ./types.graphql[22m
 
 Pulled project with id "citoe33ar0x6p0168xqrpxa5h" and environment "dev"`
   t.is(output.trim(), expectedOutput.trim())
+
+  const json = vol.toJSON()
+  t.deepEqual(json, defaultVolume)
 })
 
 test('Pull with an incorrect project id throws', async t => {
@@ -66,6 +70,7 @@ Written to ./types.graphql[22m
 
 Pulled project with id "citoe33ar0x6p0168xqrpxa5h" and environment "dev"
 Already up-to-date.`
+
   const output = out.getTestOutput()
   t.is(output.trim(), exepctedOutput.trim())
 })
