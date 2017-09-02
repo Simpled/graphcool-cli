@@ -5,7 +5,7 @@ import * as path from 'path'
 import client from './Client'
 import { envDoesntExist, noDefaultEnvironmentProvidedMessage } from '../utils/constants'
 
-const envPath = path.join(process.cwd(), '.graphcool.env')
+const envPath = path.join(process.cwd(), '.graphcoolrc')
 
 class Environment {
   env: EnvironmentConfig

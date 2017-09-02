@@ -30,7 +30,7 @@ export const graphcoolEnvironmentFileName = '.env.gcl'
 // TODO enable when we have the new flow here defined
 // export const graphcoolCloneProjectFileName = (projectFileName?: string) => projectFileName ?
 //   `clone-${projectFileName.startsWith(`./`) ? projectFileName.substring(2) : projectFileName}`: `clone-${graphcoolProjectFileName}`
-export const graphcoolRCFilePath = path.join(os.homedir(), '.graphcoolrc')
+export const graphcoolRCFilePath = path.join(os.homedir(), '.graphcool')
 export const projectFileSuffix = '.graphcool'
 export const schemaFileSuffix = '.graphql'
 export const exampleSchema = `\
