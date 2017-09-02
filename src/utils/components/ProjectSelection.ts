@@ -7,7 +7,8 @@ export async function ProjectSelection(): Promise<string> {
   const projectNames = projects.map(project => `${project.name} (${project.id})`)
 
   const selectedIndex = await new Promise<number>(r => {
-    terminal.gridMenu(projectNames, (err, res) => {
+    const command = projectNames.length >= 12 ? 'gridMenu' : 'singleColumnMenu'
+    terminal[command](projectNames, (err, res) => {
       terminal( '\n' ).eraseLineAfter.green(
         "Selected project: %s\n" ,
         res.selectedText
