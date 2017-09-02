@@ -29,7 +29,7 @@ export interface PushPullProps {
   isDryRun: boolean
 }
 
-export default async ({force, projectEnvironment: {projectId, version}, envName, isDryRun}: PushPullProps): Promise<void> => {
+export default async function pushCommand({force, projectEnvironment: {projectId, version}, envName, isDryRun}: PushPullProps): Promise<void> {
   const projectInfo = await client.fetchProjectInfo(projectId)
   if (!projectInfo) {
     throw new Error(invalidProjectFileMessage)

@@ -7,9 +7,10 @@ import fs, { reset } from '../src/io/fs'
 import definition from '../src/io/ProjectDefinition/ProjectDefinition'
 import env from '../src/io/Environment'
 import config from '../src/io/GraphcoolRC'
+import { vol } from 'memfs'
+
 const fetchMock = require('fetch-mock')
 const debug = require('debug')('graphcool')
-import {vol} from 'memfs'
 
 test.before(() => {
   client.mock(project)
