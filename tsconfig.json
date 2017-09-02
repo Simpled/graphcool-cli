@@ -3,7 +3,7 @@
     "preserveConstEnums": true,
     "strictNullChecks": true,
     "moduleResolution": "node",
-    "target": "es6",
+    "target": "es5",
     "outDir": "./dist",
     "sourceMap": true,
     "module": "CommonJS",
