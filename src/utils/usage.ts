@@ -16,6 +16,7 @@ export const usageRoot = () => `
     logs          View logs
     info          Print project info (environments, endpoints, ...)
     status        Display difference between local and remote project versions
+    generate      Generate Graphcool primitives (Subscriptions, Permission Queries, ...)
     playground    Open GraphQL Playground
     console       Open Graphcool Console in browser
     projects      List all projects
@@ -36,6 +37,23 @@ export const usageRoot = () => `
   ${chalk.gray('-')} Update live project with local changes
     ${chalk.cyan('$ graphcool push')}
 
+`
+
+export const usageGenerate = `
+  Usage: graphcool generate COMMAND
+  
+  Generate Graphcool primitives (Subscriptions, Permission Queries, ...)
+  
+  ${chalk.dim('Commands:')}
+    subscription       Generate a server-side subscription
+    schema-extension   Generate a Schema Extension
+    beforeOperation    Generate a "before operation" function hook
+    afterOperation     Generate a "before operation" function hook
+    permission         Generate a permission
+  
+  ${chalk.dim('Options:')}
+    -h, --help  Output usage information
+  
 `
 
 export const usageTest = `
