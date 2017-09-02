@@ -33,7 +33,7 @@ export default async (props: PullProps): Promise<void> => {
     out.stopSpinner()
 
     if (!newProject && !props.force) {
-      const projectDiff = diff(definition.definition.modules[0], projectInfo.projectDefinition.modules[0])
+      const projectDiff = diff(definition.definition!.modules[0], projectInfo.projectDefinition.modules[0])
       printDiff(projectDiff)
       if (projectDiff.changed) {
         await Prompt(warnOverrideProjectFileMessage)
@@ -59,7 +59,7 @@ export default async (props: PullProps): Promise<void> => {
         env.setDefault(envName)
       }
       env.save()
-      out.write(`\n\nPulled project with id "${projectId}" and environment "${envName}"`)
+      out.write(`\n\nPulled project with id "${projectId}" and environment "${envName}"\n`)
     }
   } catch (e) {
     out.stopSpinner()

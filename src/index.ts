@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 
-import 'source-map-support/register'
 import { CommandInstruction } from './types'
 import pushCommand, { PushPullCliProps } from './commands/push'
 import consoleCommand, { ConsoleProps } from './commands/console'
@@ -26,6 +25,8 @@ import envCommand, { EnvProps } from './commands/env'
 
 const Raven = require('raven')
 const {version} = require('../../package.json')
+
+require('source-map-support/register')
 
 async function main() {
   // initialize sentry

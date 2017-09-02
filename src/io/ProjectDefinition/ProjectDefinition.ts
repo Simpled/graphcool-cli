@@ -2,11 +2,11 @@
 import { ProjectDefinition } from '../../types'
 import fsToProject from './fsToProject'
 import projectToFs from './projectToFs'
-import * as fs from 'fs'
 import * as path from 'path'
+import fs from '../fs'
 
 class ProjectDefinitionClass {
-  definition: ProjectDefinition
+  definition: ProjectDefinition | null
 
   public async load() {
     if (fs.existsSync(path.join(process.cwd(), 'graphcool.yml'))) {
@@ -15,10 +15,10 @@ class ProjectDefinitionClass {
   }
 
   public async save(files?: string[], silent?: boolean) {
-    await projectToFs(this.definition, process.cwd(), files, silent)
+    await projectToFs(this.definition!, process.cwd(), files, silent)
   }
 
-  public set(definition: ProjectDefinition) {
+  public set(definition: ProjectDefinition | null) {
     this.definition = definition
   }
 }

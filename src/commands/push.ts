@@ -45,7 +45,7 @@ export default async ({force, projectEnvironment: {projectId, version}, envName,
       throw new Error(remoteSchemaAheadMessage(projectInfo.version, version))
     }
 
-    const migrationResult  = await client.push(projectId, force, isDryRun, version, definition.definition)
+    const migrationResult  = await client.push(projectId, force, isDryRun, version, definition.definition!)
 
     out.stopSpinner()
 

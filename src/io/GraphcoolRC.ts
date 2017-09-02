@@ -1,5 +1,5 @@
 import { graphcoolRCFilePath } from '../utils/constants'
-import * as fs from 'fs'
+import fs from './fs'
 
 class GraphcoolRC {
   token: string | null = null

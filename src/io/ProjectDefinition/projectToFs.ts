@@ -1,9 +1,9 @@
 import * as path from 'path'
-import * as fs from 'fs'
 import { GraphcoolModule, ProjectDefinition } from '../../types'
 import * as mkdirp from 'mkdirp'
 import * as chalk from 'chalk'
 import out from '../Out'
+import fs from '../fs'
 
 export default async function projectToFs(project: ProjectDefinition, outputDir: string, files?: string[], silent?: boolean): Promise<any> {
   for (const module of project.modules) {

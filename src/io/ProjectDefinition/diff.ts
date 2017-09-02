@@ -3,6 +3,7 @@ import * as concordance from 'concordance'
 import concordanceOptions from '../../utils/concordance-options'
 import { GraphcoolModule } from '../../types'
 import {difference} from 'lodash'
+import out from '../Out'
 
 export interface ModuleDiff {
   files: {[fileName: string]: Diff}
@@ -59,16 +60,16 @@ export function diff(a: GraphcoolModule, b: GraphcoolModule): ModuleDiff {
 
 export function printDiff(diff: ModuleDiff) {
   if (diff.changed) {
-    console.log(chalk.bold('\nChanges since last pull:\n'))
+    out.write(chalk.bold('\nChanges since last pull:\n'))
     Object.keys(diff.files).forEach(fileName => {
       const fileDiff = diff.files[fileName]
 
-      console.log(`${chalk.dim(fileName)}`)
-      console.log(fileDiff.diff)
-      console.log()
+      out.write(`${chalk.dim(fileName)}\n`)
+      out.write(fileDiff.diff)
+      out.write('\n\n')
     })
   } else {
-    console.log('Already up-to-date.')
+    out.write('Already up-to-date.\n')
   }
 }
 

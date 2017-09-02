@@ -4,7 +4,7 @@ import * as chalk from 'chalk'
 import figures = require('figures')
 import Raven = require('raven')
 import ora = require('ora')
-import * as fs from 'fs'
+import fs from './fs'
 
 const debug = require('debug')('graphcool')
 
@@ -76,6 +76,13 @@ class Out {
     process.exit(1)
   }
 
+  getTestOutput() {
+    return fs.readFileSync('test.out', 'utf-8')
+  }
+
+  clearTestOutput() {
+    fs.writeFileSync('test.out', '')
+  }
 
 }
 

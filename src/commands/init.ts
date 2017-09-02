@@ -57,7 +57,7 @@ export default async (props: InitProps): Promise<void> => {
     const projectDefinition = props.blank ? definition.definition : defaultDefinition
 
     // create project
-    const project = await client.createProject(name, projectDefinition, props.alias, props.region)
+    const project = await client.createProject(name, projectDefinition!, props.alias, props.region)
 
     // add environment
     const newEnv = props.env || 'dev'

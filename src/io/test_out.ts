@@ -1,7 +1,7 @@
-import * as fs from 'fs'
 import * as chalk from 'chalk'
 import {setDebugMessage, contactUsInSlackMessage} from '../utils/constants'
 import figures = require('figures')
+import fs from './fs'
 
 class Out {
 

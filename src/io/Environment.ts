@@ -1,16 +1,16 @@
-import * as fs from 'fs'
 import * as yaml from 'js-yaml'
-import { EnvironmentConfig, Environments, ProjectEnvironment } from '../types'
+import { EnvironmentConfig, ProjectEnvironment } from '../types'
 import * as path from 'path'
 import client from './Client'
-import { envDoesntExist, noDefaultEnvironmentProvidedMessage } from '../utils/constants'
+import { envDoesntExist } from '../utils/constants'
+import fs from './fs'
 
 const envPath = path.join(process.cwd(), '.graphcoolrc')
 
 class Environment {
   env: EnvironmentConfig
 
-  private initEmptyEnvironment() {
+  public initEmptyEnvironment() {
     this.env = {
       default: null,
       environments: {}
@@ -89,7 +89,6 @@ class Environment {
   public deleteIfExist(projectIds: string[]) {
     projectIds.forEach(projectId => {
       const envName = Object.keys(this.env.environments).find(envName => this.env.environments[envName].projectId === projectId)
-      console.log('delete envName', envName)
       if (envName) {
         delete this.env.environments[envName]
       }

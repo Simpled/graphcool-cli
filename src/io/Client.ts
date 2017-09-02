@@ -12,6 +12,10 @@ import {
 import { getFastestRegion } from '../utils/ping'
 import { omit } from 'lodash'
 import config from './GraphcoolRC'
+import * as cuid from 'cuid'
+import * as path from 'path'
+import fs from './fs'
+
 const debug = require('debug')('graphcool')
 
 
@@ -29,9 +33,13 @@ const REMOTE_PROJECT_FRAGMENT = `
 
 class Client {
   client: GraphQLClient
+
   constructor() {
     this.updateClient()
   }
+
+  public mock: (input: {request: any, response: any}) => void
+  private mocks: {[request: string]: string} = {}
 
   updateClient() {
     const client = new GraphQLClient(systemAPIEndpoint, {
@@ -41,10 +49,27 @@ class Client {
     })
 
     this.client = {
-      request: function(mutation, variables) {
-        debug(mutation)
+      request: (query, variables) => {
+        debug(query)
         debug(variables)
-        return client.request(mutation, variables).then(data => {debug(data); return data})
+        const request = JSON.stringify({
+          query,
+          variables: variables ? variables : undefined,
+        }, null, 2)
+        if (this.mocks[request]) {
+          return Promise.resolve(this.mocks[request])
+        }
+        return client.request(query, variables).then(data => {
+          const id = cuid()
+          const requestPath = path.join(process.cwd(), `./${id}-request.json`)
+          fs.writeFileSync(requestPath, request)
+          const responsePath = path.join(process.cwd(), `./${id}-response.json`)
+          fs.writeFileSync(responsePath, JSON.stringify(data, null, 2))
+          if (process.env.NODE_ENV === 'test') {
+            throw new Error(`Error, performed not mocked request. Saved under ${id}`)
+          }
+          return data
+        })
       }
     } as any
   }
@@ -78,7 +103,7 @@ class Client {
       variables = {...variables, region: fastestRegion.toUpperCase()}
     }
 
-    const {addProject: {project}} = await this.client.request<{addProject: {project: RemoteProject}}>(mutation, variables)
+    const {addProject: {project}} = await this.client.request<{ addProject: { project: RemoteProject } }>(mutation, variables)
 
     await this.push(project.id, true, false, project.version, projectDefinition)
 
@@ -130,7 +155,11 @@ class Client {
         }
       }
     `
-    const {migrateProject} = await this.client.request<{migrateProject: MigrateProjectPayload}>(mutation, {newSchema, force, isDryRun})
+    const {migrateProject} = await this.client.request<{ migrateProject: MigrateProjectPayload }>(mutation, {
+      newSchema,
+      force,
+      isDryRun
+    })
 
     return {
       migrationMessages: migrateProject.migrationMessages,
@@ -178,7 +207,7 @@ class Client {
         }
       }
     `
-    const {push} = await this.client.request<{push: MigrateProjectPayload}>(mutation, {
+    const {push} = await this.client.request<{ push: MigrateProjectPayload }>(mutation, {
       projectId,
       force,
       isDryRun,
@@ -209,6 +238,7 @@ class Client {
         }
       }
     }
+
     const result = await this.client.request<ProjectsPayload>(`
       {
         viewer {
@@ -349,11 +379,11 @@ class Client {
   }
 
   async cloneProject(variables: {
-                       projectId: string,
-                       name: string,
-                       includeMutationCallbacks: boolean,
-                       includeData: boolean,
-                     }): Promise<ProjectInfo> {
+    projectId: string,
+    name: string,
+    includeMutationCallbacks: boolean,
+    includeData: boolean,
+  }): Promise<ProjectInfo> {
 
     interface CloneProjectPayload {
       project: RemoteProject
@@ -392,6 +422,16 @@ class Client {
     } catch (e) {
       // noop
     }
+  }
+}
+
+// only make this available in test mode
+if (process.env.NODE_ENV === 'test') {
+  Client.prototype.mock = function({request, response}) {
+    if (!this.mocks) {
+      this.mocks = {}
+    }
+    this.mocks[JSON.stringify(request, null, 2)] = response
   }
 }
 

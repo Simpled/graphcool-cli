@@ -1,9 +1,10 @@
 import * as path from 'path'
-import * as fs from 'fs'
 import * as chalk from 'chalk'
 import { ProjectDefinition, GraphcoolModule } from '../../types'
 import { readDefinition } from './yaml'
 import { FunctionDefinition, GraphcoolDefinition } from '../../definition-schema/ts-definition'
+import out from '../Out'
+import fs from '../fs'
 
 interface ErrorMessage {
   message: string
@@ -115,9 +116,9 @@ export default async function fsToProject(inputDir: string): Promise<ProjectDefi
   }
 
   if (errors.length > 0) {
-    console.log(chalk.bold('The following errors occured while reading the graphcool.yml project definition:'))
+    out.write(chalk.bold('The following errors occured while reading the graphcool.yml project definition:'))
     const messages = errors.map(e => `  ${chalk.red(e.message)}`).join('\n')
-    console.log(messages + '\n')
+    out.write(messages + '\n')
     process.exit(1)
   }
 

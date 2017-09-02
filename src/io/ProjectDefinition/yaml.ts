@@ -3,6 +3,7 @@ import { GraphcoolDefinition } from '../../definition-schema/ts-definition'
 import * as anyjson from 'any-json'
 import schema from '../../definition-schema/json-schema'
 import * as chalk from 'chalk'
+import out from '../Out'
 
 const ajv = new Ajv()
 
@@ -15,8 +16,8 @@ export async function readDefinition(file: string): Promise<GraphcoolDefinition>
   const valid = validate(json)
   // TODO activate as soon as the backend sends valid yaml
   if (!valid) {
-    console.log(chalk.bold('Errors while validating graphcool.yml:'))
-    console.error(chalk.red(ajv.errorsText(validate.errors).split(', ').map(l => `  ${l}`).join('\n')))
+    out.write(chalk.bold('Errors while validating graphcool.yml:\n'))
+    out.writeError(chalk.red(ajv.errorsText(validate.errors).split(', ').map(l => `  ${l}`).join('\n')))
     process.exit(1)
   }
   return json as GraphcoolDefinition
