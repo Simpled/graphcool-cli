@@ -1,31 +1,38 @@
 import test from 'ava'
-import * as fs from 'fs'
-import * as path from 'path'
-import * as rimraf from 'rimraf'
-import * as mkdirp from 'mkdirp'
-import { mockFileNames, mockFiles, mockDefinition, changedMockDefinition } from './fixtures/mock_modules'
 import projectToFs from '../src/io/ProjectDefinition/projectToFs'
-import * as globby from 'globby'
 import fsToProject from '../src/io/ProjectDefinition/fsToProject'
+import fs from '../src/io/fs'
+import * as path from 'path'
+import { defaultDefinition } from '../src/utils/constants'
+import out from '../src/io/Out'
 
-const projectToFsDir = path.join(__dirname, '/project-to-fs-test')
-const projectToFsDirChanged = path.join(__dirname, '/project-to-fs-test-changed')
-const fsToProjectDir = path.join(__dirname, '/fs-to-project-test')
+const projectToFsDir = path.join(process.cwd(), '/project-to-fs-test')
+const fsToProjectDir = path.join(process.cwd(), '/fs-to-project-test')
 
 test.before(async () => {
-  mkdirp.sync(projectToFsDir)
-  // mkdirp.sync(projectToFsDirChanged)
-  mkdirp.sync(fsToProjectDir)
-  await projectToFs(mockDefinition, fsToProjectDir)
+  fs.mkdirSync(fsToProjectDir)
+  fs.mkdirSync(projectToFsDir)
+  await projectToFs(defaultDefinition, fsToProjectDir)
 })
 
 test('fs to project', async t => {
   const definition = await fsToProject(fsToProjectDir)
-  t.deepEqual(mockDefinition, definition)
-})
+  t.deepEqual(defaultDefinition, definition)
+  const expectedOutput = `\
+[1m
+Written to graphcool.yml[22m[1m
+Written to ./types.graphql
+[22m[1m
+Written to ./code/filter-posts.js
+[22m[1m
+Written to ./code/log-posts.js
+[22m[1m
+Written to ./code/log-posts.graphql
+[22m[1m
+Written to ./code/weather.js
+[22m[1m
+Written to ./code/weather.graphql
+[22m`
 
-test.after(() => {
-  rimraf.sync(projectToFsDir)
-  // rimraf.sync(projectToFsDirChanged)
-  rimraf.sync(fsToProjectDir)
+  t.is(expectedOutput.trim(), out.getTestOutput().trim())
 })

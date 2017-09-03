@@ -1,7 +1,7 @@
 import test from 'ava'
 import pullCommand from '../src/commands/pull'
 import client from '../src/io/Client'
-import { defaultVolume, project, projects, push } from './fixtures/new-mock-data'
+import { project, projects, push } from './fixtures/new-mock-data'
 import out from '../src/io/Out'
 import fs, { reset } from '../src/io/fs'
 import definition from '../src/io/ProjectDefinition/ProjectDefinition'
@@ -11,7 +11,6 @@ import { vol } from 'memfs'
 import pushCommand from '../src/commands/push'
 
 const fetchMock = require('fetch-mock')
-const debug = require('debug')('graphcool')
 
 test.before(() => {
   client.mock(project)

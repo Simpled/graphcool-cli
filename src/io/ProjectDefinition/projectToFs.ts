@@ -4,6 +4,7 @@ import * as mkdirp from 'mkdirp'
 import * as chalk from 'chalk'
 import out from '../Out'
 import fs from '../fs'
+require('source-map-support/register')
 
 export default async function projectToFs(project: ProjectDefinition, outputDir: string, files?: string[], silent?: boolean): Promise<any> {
   for (const module of project.modules) {
@@ -38,10 +39,10 @@ async function moduleToFs(module: GraphcoolModule, outputDir: string, files?: st
       // ignore if file doesn't exist yet
     }
 
-    mkdirp.sync(dir)
+    mkdirp.sync(dir, {fs})
     fs.writeFileSync(filePath, content)
     if (!silent) {
-      out.write(chalk.bold(`\nWritten to ${relativePath}`))
+      out.write(chalk.bold(`\nWritten to ${relativePath}\n`))
     }
   }
 }

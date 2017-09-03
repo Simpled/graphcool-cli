@@ -11,7 +11,7 @@
     "dist/"
   ],
   "scripts": {
-    "test": "npm run build && rm -f test.out && NODE_ENV=test ava --serial ./dist/tests/push.test.js && node dist/src/index.js",
+    "test": "npm run build && rm -f test.out && NODE_ENV=test ava --serial ./dist/tests/{projectToFs,pull,push}.test.js && node dist/src/index.js",
     "postinstall": "echo Run graphcool init to get started",
     "build": "rm -rf dist && tsc && chmod +x dist/src/index.js",
     "prepublish": "npm run build"
@@ -57,6 +57,7 @@
     "rimraf": "^2.6.1",
     "sillyname": "^0.1.0",
     "source-map-support": "^0.4.16",
+    "strip-ansi": "^4.0.0",
     "table": "4.0.1",
     "terminal-kit": "^1.13.10"
   }
