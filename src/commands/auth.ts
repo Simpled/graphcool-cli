@@ -14,7 +14,7 @@ export interface AuthProps {
   token?: string
 }
 
-export default async ({token}: AuthProps, authServer: AuthServer): Promise<void> => {
+export default async function authCommand ({token}: AuthProps, authServer: AuthServer): Promise<void> {
 
   if (!token) {
     out.startSpinner(openBrowserMessage)
@@ -39,6 +39,5 @@ export default async ({token}: AuthProps, authServer: AuthServer): Promise<void>
     config.save()
     throw new Error('Invalid auth token')
   }
-
 }
 
