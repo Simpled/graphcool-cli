@@ -66,9 +66,9 @@ class Client {
           // fs.writeFileSync(requestPath, request)
           // const responsePath = path.join(process.cwd(), `./${id}-response.json`)
           // fs.writeFileSync(responsePath, JSON.stringify(data, null, 2))
-          if (process.env.NODE_ENV === 'test') {
-            throw new Error(`Error, performed not mocked request. Saved under ${id}`)
-          }
+          // if (process.env.NODE_ENV === 'test') {
+          //   throw new Error(`Error, performed not mocked request. Saved under ${id}`)
+          // }
           return data
         })
       }
