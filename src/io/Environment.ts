@@ -59,6 +59,9 @@ class Environment {
   }
 
   public setDefault(name: string) {
+    if (!this.env.environments[name]) {
+      throw new Error(`Environment ${name} doesn't exist in local .graphcoolrc definition`)
+    }
     this.env.default = name
   }
 
