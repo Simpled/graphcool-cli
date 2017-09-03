@@ -53,8 +53,8 @@ export default async function envCommand(props: EnvProps) {
   }
 }
 
-function set(envName: string, projectId: string) {
-  env.set(envName, projectId)
+async function set(envName: string, projectId: string) {
+  await env.set(envName, projectId)
   env.save()
   out.write(envSet(envName, projectId))
 }

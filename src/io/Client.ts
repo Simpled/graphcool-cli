@@ -60,11 +60,12 @@ class Client {
           return Promise.resolve(this.mocks[request])
         }
         return client.request(query, variables).then(data => {
-          const id = cuid()
-          const requestPath = path.join(process.cwd(), `./${id}-request.json`)
-          fs.writeFileSync(requestPath, request)
-          const responsePath = path.join(process.cwd(), `./${id}-response.json`)
-          fs.writeFileSync(responsePath, JSON.stringify(data, null, 2))
+          // TODO remove when not needed anymore
+          // const id = cuid()
+          // const requestPath = path.join(process.cwd(), `./${id}-request.json`)
+          // fs.writeFileSync(requestPath, request)
+          // const responsePath = path.join(process.cwd(), `./${id}-response.json`)
+          // fs.writeFileSync(responsePath, JSON.stringify(data, null, 2))
           if (process.env.NODE_ENV === 'test') {
             throw new Error(`Error, performed not mocked request. Saved under ${id}`)
           }

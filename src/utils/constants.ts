@@ -446,8 +446,64 @@ ${chalk.bold('Error:')} The following option is not recognized: ${chalk.red(`${u
 Use ${chalk.cyan(`\`graphcool ${command} --help\``)} to see a list of all possible options.
 `
 
-
 export const defaultDefinition: ProjectDefinition = {
+  "modules": [
+    {
+      "name": "",
+      "content": `
+types: ./types.graphql
+functions: {}
+permissions:
+- isEnabled: true
+  operation: File.read
+  authenticated: false
+- isEnabled: true
+  operation: File.create
+  authenticated: false
+- isEnabled: true
+  operation: File.update
+  authenticated: false
+- isEnabled: true
+  operation: File.delete
+  authenticated: false
+- isEnabled: true
+  operation: User.read
+  authenticated: false
+- isEnabled: true
+  operation: User.create
+  authenticated: false
+- isEnabled: true
+  operation: User.update
+  authenticated: false
+- isEnabled: true
+  operation: User.delete
+  authenticated: false
+rootTokens: []
+`,
+      "files": {
+        "./types.graphql": `type File implements Node {
+  contentType: String!
+  createdAt: DateTime!
+  id: ID! @isUnique
+  name: String!
+  secret: String! @isUnique
+  size: Int!
+  updatedAt: DateTime!
+  url: String! @isUnique
+}
+
+type User implements Node {
+  createdAt: DateTime!
+  id: ID! @isUnique
+  updatedAt: DateTime!
+}
+`,
+      }
+    }
+  ]
+}
+
+export const advancedDefinition: ProjectDefinition = {
     "modules": [
       {
         "name": "",
