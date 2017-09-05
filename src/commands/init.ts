@@ -64,7 +64,9 @@ export default async (props: InitProps): Promise<void> => {
 
     if (newProject) {
       env.setDefault(newEnv)
-      definition.save(undefined, true)
+      out.write('\n')
+      definition.save(undefined, false)
+      out.write('\n')
     }
     env.save()
 

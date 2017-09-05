@@ -123,18 +123,15 @@ export const creatingProjectMessage = (name: string) => `Creating project ${chal
 export const createdProjectMessage = (name: string, projectId: string, projectOutputPath?: string) => `\
  ${chalk.green(figures.tick)} Created project ${chalk.bold(name)} (ID: ${projectId}) successfully.
 
-
    ${chalk.bold('Here is what you can do next:')}
 
-   1) Open ${chalk.bold(projectOutputPath || 'project.graphcool')} in your editor to update your schema.
+   1) Open ${chalk.bold('graphcool.yml')} or ${chalk.bold('types.graphql')} in your editor to update your project definition.
       You can push your changes using ${chalk.cyan('`graphcool push`')}.
 
    2) Use one of the following endpoints to connect to your GraphQL API:
 
         Simple API:   https://api.graph.cool/simple/v1/${projectId}
         Relay API:    https://api.graph.cool/relay/v1/${projectId}
-
-   3) Edit your project using the Console. Run ${chalk.cyan('`graphcool console`')} to open it.
 `
 
 export const couldNotCreateProjectMessage = `\

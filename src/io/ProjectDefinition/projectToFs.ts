@@ -20,7 +20,7 @@ async function moduleToFs(module: GraphcoolModule, outputDir: string, files?: st
     const ymlPath = path.join(outputDir, 'graphcool.yml')
     fs.writeFileSync(ymlPath, module.content)
     if (!silent) {
-      out.write(chalk.bold(`\nWritten to graphcool.yml`))
+      out.write(chalk.blue(`Written to graphcool.yml\n`))
     }
   }
 
@@ -42,7 +42,7 @@ async function moduleToFs(module: GraphcoolModule, outputDir: string, files?: st
     mkdirp.sync(dir, {fs})
     fs.writeFileSync(filePath, content)
     if (!silent) {
-      out.write(chalk.bold(`\nWritten to ${relativePath}\n`))
+      out.write(chalk.blue(`Written to ${relativePath}\n`))
     }
   }
 }
