@@ -4,6 +4,9 @@ import fsToProject from './fsToProject'
 import projectToFs from './projectToFs'
 import * as path from 'path'
 import fs from '../fs'
+import { readDefinition } from './yaml'
+import out from '../Out'
+import * as chalk from 'chalk'
 
 class ProjectDefinitionClass {
   definition: ProjectDefinition | null
@@ -15,7 +18,14 @@ class ProjectDefinitionClass {
   }
 
   public async save(files?: string[], silent?: boolean) {
-    await projectToFs(this.definition!, process.cwd(), files, silent)
+    projectToFs(this.definition!, process.cwd(), files, silent)
+  }
+
+  public async saveTypes() {
+    const definition = await readDefinition(this.definition!.modules[0]!.content)
+    const types = this.definition!.modules[0].files[definition.types]
+    out.write(chalk.blue(`Written ${definition.types}`))
+    fs.writeFileSync(path.join(process.cwd(), definition.types), types)
   }
 
   public set(definition: ProjectDefinition | null) {

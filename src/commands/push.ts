@@ -71,7 +71,7 @@ export default async function pushCommand({force, projectEnvironment: {projectId
         env.save()
 
         definition.set(migrationResult.projectDefinition)
-        definition.save(undefined, true)
+        definition.saveTypes()
       }
     }
 

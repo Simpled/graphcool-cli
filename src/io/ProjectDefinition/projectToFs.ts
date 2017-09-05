@@ -6,13 +6,13 @@ import out from '../Out'
 import fs from '../fs'
 require('source-map-support/register')
 
-export default async function projectToFs(project: ProjectDefinition, outputDir: string, files?: string[], silent?: boolean): Promise<any> {
+export default function projectToFs(project: ProjectDefinition, outputDir: string, files?: string[], silent?: boolean): void {
   for (const module of project.modules) {
-    await moduleToFs(module, outputDir, files, silent)
+    moduleToFs(module, outputDir, files, silent)
   }
 }
 
-async function moduleToFs(module: GraphcoolModule, outputDir: string, files?: string[], silent?: boolean) {
+function moduleToFs(module: GraphcoolModule, outputDir: string, files?: string[], silent?: boolean) {
   if (!silent) {
     out.write('\n')
   }

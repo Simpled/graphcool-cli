@@ -23,6 +23,7 @@ export const usageRoot = () => `
     delete        Delete one or more projects
     auth          Create account or login
     version       Print version
+    root-token    Get the root tokens
 
   Run 'graphcool COMMAND --help' for more information on a command.
 
