@@ -22,6 +22,7 @@ import { pick } from 'lodash'
 import out from './io/Out'
 import definition from './io/ProjectDefinition/ProjectDefinition'
 import envCommand, { EnvProps } from './commands/env'
+import { usageForCommand } from './utils/arguments'
 
 const Raven = require('raven')
 const {version} = require('../../package.json')
@@ -41,7 +42,7 @@ async function main() {
   switch (command) {
 
     case undefined: {
-      process.stdout.write(usageRoot())
+      out.write(usageRoot())
       process.exit(0)
     }
     case 'init': {
@@ -159,6 +160,11 @@ async function main() {
     case 'help': {
       process.stdout.write(usageRoot())
       process.exit(0)
+      break
+    }
+
+    case 'usage': {
+      out.write(usageForCommand((props as any).command))
       break
     }
 
