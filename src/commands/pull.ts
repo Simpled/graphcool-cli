@@ -33,7 +33,9 @@ export default async (props: PullProps): Promise<void> => {
     out.stopSpinner()
 
     if (!newProject && !props.force) {
-      const projectDiff = diff(definition.definition!.modules[0], projectInfo.projectDefinition.modules[0])
+      const localModule = definition.definition!.modules[0]
+      const remoteModule = projectInfo.projectDefinition.modules[0]
+      const projectDiff = diff(localModule, remoteModule)
       printDiff(projectDiff)
       if (projectDiff.changed) {
         await Prompt(warnOverrideProjectFileMessage)

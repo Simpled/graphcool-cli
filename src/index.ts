@@ -56,10 +56,12 @@ async function main() {
     case 'push': {
       await definition.load()
       await checkAuth('auth')
+      console.log(props)
       const projectId = await env.getProjectId(pick<any, any>(props as PushPullCliProps, ['project', 'env']))
       if (!projectId) {
         throw new Error(noDefaultEnvironmentProvidedMessage)
       }
+      console.log('got projectId', projectId)
       const projectEnvironment = env.getEnvironment(projectId)
       if (!projectEnvironment) {
         throw new Error(`In order to push you need to have project id ${projectId} in the local .graphcool.env`)

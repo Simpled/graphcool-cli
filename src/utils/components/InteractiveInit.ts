@@ -1,11 +1,9 @@
-import { defaultDefinition, howDoYouWantToGetStarted, sampleSchemaURL } from '../constants'
+import { advancedDefinition, defaultDefinition, howDoYouWantToGetStarted } from '../constants'
 import * as chalk from 'chalk'
 import { ProjectDefinition } from '../../types'
 import Selection from './Selection'
 import client from '../../io/Client'
 import { ProjectSelection } from './ProjectSelection'
-const {terminal} = require('terminal-kit')
-
 
 export default async (): Promise<ProjectDefinition> => {
   const options = [
@@ -33,7 +31,7 @@ export default async (): Promise<ProjectDefinition> => {
       ]
       const selectedExampleIndex = await Selection('Select an example', examples)
       // TODO: use the correct example here
-      return defaultDefinition
+      return advancedDefinition
     }
   }
 

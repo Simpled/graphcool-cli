@@ -105,10 +105,16 @@ class Client {
     }
 
     const {addProject: {project}} = await this.client.request<{ addProject: { project: RemoteProject } }>(mutation, variables)
-    const res = await this.push(project.id, true, false, project.version, projectDefinition)
+    // TODO rm this as soon as the backend has fixed this
+    // push schema only
+    const tempDefinition: ProjectDefinition = JSON.parse(project.projectDefinitionWithFileContent)
+    tempDefinition.modules[0].files['./types.graphql'] = projectDefinition.modules[0].files['./types.graphql']
+    const res1 = await this.push(project.id, true, false, project.version, tempDefinition)
 
-    if (res.errors && res.errors.length > 0) {
-      throw new Error(res.errors.map(e => e.description).join('\n'))
+    const res2 = await this.push(project.id, true, false, res1.newVersion, projectDefinition)
+
+    if (res1.errors && res1.errors.length > 0) {
+      throw new Error(res1.errors.map(e => e.description).join('\n'))
     }
 
     // TODO set project definition, should be possibility in the addProject mutation

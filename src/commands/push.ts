@@ -35,7 +35,7 @@ export default async function pushCommand({force, projectEnvironment: {projectId
     throw new Error(invalidProjectFileMessage)
   }
 
-  out.startSpinner(pushingNewSchemaMessage)
+  out.startSpinner(pushingNewSchemaMessage(projectId, version, envName))
 
   try {
 
@@ -51,7 +51,7 @@ export default async function pushCommand({force, projectEnvironment: {projectId
 
     // no action required
     if ((!migrationResult.migrationMessages || migrationResult.migrationMessages.length === 0) && (!migrationResult.errors || migrationResult.errors.length === 0)) {
-      out.write(noActionRequiredMessage)
+      out.write(noActionRequiredMessage(projectId, envName))
       return
     }
 
@@ -60,7 +60,7 @@ export default async function pushCommand({force, projectEnvironment: {projectId
       if (isDryRun) {
         out.write(potentialChangesMessage)
       } else {
-        out.write(migrationPerformedMessage)
+        out.write(migrationPerformedMessage(projectId, migrationResult.newVersion, envName))
       }
       printMigrationMessages(migrationResult.migrationMessages)
       out.write(`\n`)

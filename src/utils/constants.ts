@@ -193,16 +193,17 @@ export const invalidProjectFileMessage = `\
 The project environment file (${graphcoolEnvironmentFileName}) that you provided doesn't seem to be valid. Please make sure it contains the ID of your project.
 `
 
-export const pushingNewSchemaMessage = `\
-Pushing your project...`
+export const pushingNewSchemaMessage = (projectId: string, version: number, envName: string) => `\
+Pushing to project ${chalk.bold(projectId)} with version ${chalk.bold(String(version))} and local environment ${chalk.bold(envName)}`
 
 
-export const noActionRequiredMessage = `\
- ${chalk.green(figures.tick)} Identical project definition, no action required.
+export const noActionRequiredMessage = (projectId: string, envName: string) => `\
+ ${chalk.green(figures.tick)} Identical project definition for project ${chalk.bold(projectId)} in env ${chalk.bold(envName)}, no action required.
 `
 
-export const migrationPerformedMessage = `\
- ${chalk.green(figures.tick)} Your project was successfully updated. Here are the changes:
+export const migrationPerformedMessage = (projectId: string, version: number, envName: string) => `\
+ ${chalk.green(figures.tick)} Your project ${chalk.bold(projectId)} of env ${chalk.bold(envName)} was successfully updated.
+ The new version is ${chalk.bold(String(version))}. Here are the changes:
 `
 
 export const migrationErrorMessage = `\

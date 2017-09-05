@@ -52,11 +52,13 @@ function getInstruction(args: string[]): CommandInstruction {
 
     case 'push': {
       const force = !!(argv['force'] || argv['f'])
+      const project = argv['project'] || argv['p']
+      const env = argv['env'] || argv['e']
       const projectFile = argv._[1]
 
       return {
         command,
-        props: {force, projectFile}
+        props: {force, projectFile, project, env}
       }
     }
 
