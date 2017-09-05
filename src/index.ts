@@ -97,7 +97,8 @@ async function main() {
 
     case 'export': {
       await checkAuth('auth')
-      await exportCommand(props as ExportProps)
+      const projectId = await env.getProjectId(props as any)
+      await exportCommand({projectId} as ExportProps)
       break
     }
 

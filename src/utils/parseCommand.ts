@@ -91,10 +91,11 @@ function getInstruction(args: string[]): CommandInstruction {
     case 'status':
     case 'playground': {
       const env = argv['env'] || argv['e']
+      const project = argv['project'] || argv['p']
 
       return {
         command,
-        props: {env}
+        props: {env, project}
       }
     }
 

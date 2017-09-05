@@ -13,10 +13,13 @@ export interface ExportCliProps {
 }
 
 export default async({projectId}: ExportProps): Promise<void> => {
+  if (!projectId) {
+    throw new Error(`No env or project is provided`)
+  }
   try {
     out.startSpinner(exportingDataMessage)
     const url = await client.exportProjectData(projectId)
-    const message = downloadUrlMessage(url)
+    const message = downloadUrlMessage(projectId, url)
     out.stopSpinner()
     out.write(message)
   } catch(e) {

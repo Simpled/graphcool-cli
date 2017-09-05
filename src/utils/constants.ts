@@ -287,10 +287,11 @@ Found ${projectFiles.length} project files. You can specify the one you want for
 export const exportingDataMessage = `\
 Exporting your project data ...`
 
-export const downloadUrlMessage = (url: string) => `\
- ${chalk.green(figures.tick)} You can download your project data by pasting this URL in a browser:
-
-   ${chalk.blue(figures.pointer)} Download URL: ${url}
+export const downloadUrlMessage = (projectId: string, url: string) => `\
+ ${chalk.green(figures.tick)} Done downloading ${projectId}
+ 
+ ${chalk.blue(figures.pointer)} You can download your project data by pasting this URL in a browser:
+ ${url}
 `
 
 export const multipleProjectFilesForExportMessage = (projectFiles: string[]) => `\
