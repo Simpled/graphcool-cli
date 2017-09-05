@@ -54,15 +54,13 @@ export default async (props: InitProps): Promise<void> => {
   out.startSpinner(creatingProjectMessage(name))
 
   try {
-    const projectDefinition = props.blank ? definition.definition : defaultDefinition
 
     // create project
-    const project = await client.createProject(name, projectDefinition!, props.alias, props.region)
+    const project = await client.createProject(name, definition.definition!, props.alias, props.region)
 
     // add environment
     const newEnv = props.env || 'dev'
     await env.set(newEnv, project.id)
-    definition.set(project.projectDefinition)
 
     if (newProject) {
       env.setDefault(newEnv)

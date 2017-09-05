@@ -105,8 +105,11 @@ class Client {
     }
 
     const {addProject: {project}} = await this.client.request<{ addProject: { project: RemoteProject } }>(mutation, variables)
+    const res = await this.push(project.id, true, false, project.version, projectDefinition)
 
-    await this.push(project.id, true, false, project.version, projectDefinition)
+    if (res.errors && res.errors.length > 0) {
+      throw new Error(res.errors.map(e => e.description).join('\n'))
+    }
 
     // TODO set project definition, should be possibility in the addProject mutation
 
