@@ -71,7 +71,15 @@ class Out {
 
     console.error(`\n${setDebugMessage}\n${contactUsInSlackMessage}\n`)
 
-    await new Promise(resolve => Raven.captureException(error, resolve))
+    await new Promise(resolve => {
+      // ignore raven exception
+      try {
+        Raven.captureException(error, resolve)
+      } catch (e) {
+        //
+        resolve()
+      }
+    })
 
     process.exit(1)
   }

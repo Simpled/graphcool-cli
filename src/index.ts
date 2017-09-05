@@ -30,7 +30,11 @@ require('source-map-support/register')
 
 async function main() {
   // initialize sentry
-  Raven.config(sentryDSN).install()
+  try {
+    Raven.config(sentryDSN).install()
+  } catch (e) {
+    // noop
+  }
 
   const {command, props}: CommandInstruction = await parseCommand(process.argv, version)
 
