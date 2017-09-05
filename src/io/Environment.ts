@@ -4,6 +4,7 @@ import * as path from 'path'
 import client from './Client'
 import { envDoesntExist } from '../utils/constants'
 import fs from './fs'
+import out from './Out'
 
 const envPath = path.join(process.cwd(), '.graphcoolrc')
 
@@ -27,7 +28,12 @@ class Environment {
 
   public load() {
     if (fs.existsSync(envPath)) {
-      this.env = yaml.safeLoad(fs.readFileSync(envPath, 'utf-8'))
+      try {
+        this.env = yaml.safeLoad(fs.readFileSync(envPath, 'utf-8'))
+      } catch (e) {
+        out.onError(new Error(`Error in .graphcoolrc: \n` + e.message))
+        process.exit(1)
+      }
     } else {
       this.initEmptyEnvironment()
     }
@@ -144,6 +150,5 @@ class Environment {
 }
 
 const env = new Environment()
-env.load()
 
 export default env

@@ -178,5 +178,6 @@ async function main() {
 }
 
 process.on('unhandledRejection', e => out.onError(e))
+env.load()
 
 main()
