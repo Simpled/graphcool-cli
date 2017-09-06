@@ -1,9 +1,9 @@
 import * as chalk from 'chalk'
-import * as concordance from 'concordance'
-import concordanceOptions from '../../utils/concordance-options'
 import { GraphcoolModule } from '../../types'
-import {difference} from 'lodash'
+import { difference } from 'lodash'
 import out from '../Out'
+import * as jsDiff from 'diff'
+import { LineDiff } from '../../../typings/diff'
 
 export interface ModuleDiff {
   files: {[fileName: string]: Diff}
@@ -12,7 +12,7 @@ export interface ModuleDiff {
 
 export interface Diff {
   action: 'removed' | 'added' | 'updated'
-  diff: string
+  diff: LineDiff[]
 }
 
 export function diff(a: GraphcoolModule, b: GraphcoolModule): ModuleDiff {
@@ -21,10 +21,10 @@ export function diff(a: GraphcoolModule, b: GraphcoolModule): ModuleDiff {
   let changed = false
 
   if (a.content !== b.content) {
-    moduleDiff.definition = fileDiff(a.content, b.content)
+    moduleDiff.definition = jsDiff.diffLines(a.content, b.content)
     changed = true
     files['graphcool.yml'] = {
-      diff: fileDiff(a.content, b.content || ''),
+      diff: jsDiff.diffLines(a.content, b.content || ''),
       action: 'updated'
     }
   }
@@ -35,7 +35,7 @@ export function diff(a: GraphcoolModule, b: GraphcoolModule): ModuleDiff {
 
     if (aFile !== bFile) {
       files[fileName] = {
-        diff: fileDiff(aFile, bFile || ''),
+        diff: jsDiff.diffLines(aFile, bFile || ''),
         action: bFile ? 'updated' : 'added'
       }
       changed = true
@@ -46,7 +46,7 @@ export function diff(a: GraphcoolModule, b: GraphcoolModule): ModuleDiff {
   difference(Object.keys(b.files), Object.keys(a.files)).forEach(fileName => {
     const file = b.files[fileName]
     files[fileName] = {
-      diff: fileDiff(file, ''),
+      diff: jsDiff.diffLines(file, ''),
       action: 'removed'
     }
     changed = true
@@ -64,17 +64,29 @@ export function printDiff(diff: ModuleDiff) {
     Object.keys(diff.files).forEach(fileName => {
       const fileDiff = diff.files[fileName]
 
-      out.write(`${chalk.dim(fileName)}\n`)
-      out.write(fileDiff.diff)
-      out.write('\n\n')
+      out.write(`${chalk.bold(fileName)}\n`)
+      printLinesDiff(fileDiff.diff)
+      out.write('\n')
     })
   } else {
     out.write('Already up-to-date.\n')
   }
 }
 
-function fileDiff(a: string, b: string) {
-  const localDescriptor = concordance.describe(a, concordanceOptions)
-  const remoteDescriptor = concordance.describe(b, concordanceOptions)
-  return concordance.diffDescriptors(localDescriptor, remoteDescriptor, concordanceOptions)
+function printLinesDiff(diff: LineDiff[]) {
+  console.log(diff)
+  diff.forEach(line => {
+    if (line.added) {
+      out.write(chalk.green(`${prefixLines(line.value, '+ ', line.count)}`))
+    } else if (line.removed) {
+      out.write(chalk.red(`- ${prefixLines(line.value, '- ', line.count)}`))
+    } else {
+      out.write(chalk.dim(`${prefixLines(line.value, '  ', line.count)}`))
+    }
+  })
+}
+
+function prefixLines(text: string, prefix: string, count: number) {
+  const lines = text.split('\n')
+  return lines.slice(0, count).map(l => prefix + l).concat(lines.slice(count, lines.length)).join('\n')
 }

@@ -11,7 +11,14 @@
     "lib": [
       "es2015",
       "es2016.array.include"
-    ]
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "*": [
+        "node_modules/*",
+        "src/types/*"
+      ]
+    }
   },
   "exclude": [
     "node_modules",
@@ -20,6 +27,6 @@
   "include": [
     "./src/**/*.ts",
     "./tests/**/*.ts",
-    "./custom.d.ts"
+    "./typings/*.d.ts"
   ]
 }
