@@ -74,7 +74,6 @@ export function printDiff(diff: ModuleDiff) {
 }
 
 function printLinesDiff(diff: LineDiff[]) {
-  console.log(diff)
   diff.forEach(line => {
     if (line.added) {
       out.write(chalk.green(`${prefixLines(line.value, '+ ', line.count)}`))
