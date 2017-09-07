@@ -50,6 +50,7 @@ class Client {
 
     this.client = {
       request: (query, variables) => {
+        debug(systemAPIEndpoint)
         debug(query)
         debug(variables)
         const request = JSON.stringify({
