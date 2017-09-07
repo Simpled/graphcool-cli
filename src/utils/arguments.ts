@@ -1,7 +1,6 @@
 import {Command} from '../types'
 import {
-  usagePush,
-  usagePull,
+  usageDeploy,
   usageProjects,
   usageInit,
   usageAuth,
@@ -17,7 +16,7 @@ export function optionsForCommand(command: Command): string[] {
   switch (command) {
     case 'init':
       return ['name', 'n', 'alias', 'a', 'region', 'r', 'schema', 's', 'copy', 'c', 'env', 'e']
-    case 'push':
+    case 'deploy':
       return ['force', 'f', 'env', 'e']
     case 'delete':
       return ['project', 'p', 'env', 'e']
@@ -31,8 +30,7 @@ export function optionsForCommand(command: Command): string[] {
 
 export function usageForCommand(command: Command): string {
   switch (command) {
-    case 'pull': return usagePull
-    case 'push': return usagePush
+    case 'deploy': return usageDeploy
     case 'projects': return usageProjects
     case 'init': return usageInit
     case 'auth': return usageAuth

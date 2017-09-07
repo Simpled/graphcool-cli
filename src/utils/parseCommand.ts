@@ -50,7 +50,7 @@ function getInstruction(args: string[]): CommandInstruction {
       }
     }
 
-    case 'push': {
+    case 'deploy': {
       const force = !!(argv['force'] || argv['f'])
       const project = argv['project'] || argv['p']
       const env = argv['env'] || argv['e']

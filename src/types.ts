@@ -16,7 +16,7 @@ import { EnvProps } from './commands/env'
 export type Command =
   'auth'
   | 'env'
-  | 'push'
+  | 'deploy'
   | 'init'
   | 'export'
   | 'pull'

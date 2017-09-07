@@ -8,8 +8,7 @@ export const usageRoot = () => `
   ${chalk.dim('Commands:')}
     init          Create a new project
     env           Manage project environments
-    push          Push project file changes
-    pull          Download the latest project file
+    deploy        Deploy local project definition
     test          Test a local function or permission
     import        Import project data
     export        Export project data
@@ -32,11 +31,8 @@ export const usageRoot = () => `
   ${chalk.gray('-')} Initialize a new Graphcool project
     ${chalk.cyan('$ graphcool init')}
 
-  ${chalk.gray('-')} Local setup of an existing project
-    ${chalk.cyan('$ graphcool pull -p <project-id | alias>')}
-
   ${chalk.gray('-')} Update live project with local changes
-    ${chalk.cyan('$ graphcool push')}
+    ${chalk.cyan('$ graphcool deploy')}
 
 `
 
@@ -157,48 +153,27 @@ export const usageInit = `
 
 `
 
-export const usagePull = `
-  Usage: graphcool pull [options]
+export const usageDeploy = `
+  Usage: graphcool deploy [options]
   
-  Pull the latest project definition from Graphcool
-  
-  Options:
-    -p, --project <id | alias>  ID or alias of  project to delete (deprecated, use -e in the future)
-    -e, --env <environment>     Name of the project environment to pull from
-    -f, --force                 Override project file
-    -h, --help                  Output usage information
-     
-  ${chalk.dim('Examples:')}
-  
-  ${chalk.gray('-')} Download latest project file for default project and the default environment (written to graphcool.yml)
-    ${chalk.cyan('$ graphcool pull')}
-  
-  ${chalk.gray('-')} Download latest definition for specific project environment (written to graphcool.yml)
-    ${chalk.cyan('$ graphcool pull --env <environment-name>')}
-    
-`
-
-export const usagePush = `
-  Usage: graphcool push [options]
-  
-  Push project definition changes
+  Deploy project definition changes
   
   Options:
     -p, --project <id | alias>  ID or alias of  project to delete (deprecated, use -e in the future)
-    -e, --env <environment>     Project environment to be pushed to
+    -e, --env <environment>     Project environment to be deployed
     -f, --force                 Accept data loss caused by schema changes
     -h, --help                  Output usage information
      
   ${chalk.dim('Examples:')}
       
-  ${chalk.gray('-')} Push local changes from graphcool.yml to the default project environment.
-    ${chalk.cyan('$ graphcool push')}
+  ${chalk.gray('-')} Deploy local changes from graphcool.yml to the default project environment.
+    ${chalk.cyan('$ graphcool deploy')}
   
-  ${chalk.gray('-')} Push local changes to a specific environment
-    ${chalk.cyan('$ graphcool push --env production')}
+  ${chalk.gray('-')} Deploy local changes to a specific environment
+    ${chalk.cyan('$ graphcool deploy --env production')}
       
-  ${chalk.gray('-')} Push local changes from default project file accepting potential data loss caused by schema changes
-    ${chalk.cyan('$ graphcool push --force --env production')}
+  ${chalk.gray('-')} Deploy local changes from default project file accepting potential data loss caused by schema changes
+    ${chalk.cyan('$ graphcool deploy --force --env production')}
     
 `
 

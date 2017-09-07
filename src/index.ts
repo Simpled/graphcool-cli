@@ -54,7 +54,7 @@ async function main() {
     }
 
     case 'status':
-    case 'push': {
+    case 'deploy': {
       await definition.load()
       await checkAuth('auth')
       const projectId = await env.getProjectId(pick<any, any>(props as PushPullCliProps, ['project', 'env']))

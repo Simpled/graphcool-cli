@@ -14,11 +14,13 @@ class ProjectDefinitionClass {
   public async load() {
     if (fs.existsSync(path.join(process.cwd(), 'graphcool.yml'))) {
       this.definition = await fsToProject(process.cwd())
+      fs.writeFileSync('definition.json', JSON.stringify(this.definition, null, 2))
     }
   }
 
   public async save(files?: string[], silent?: boolean) {
     projectToFs(this.definition!, process.cwd(), files, silent)
+    fs.writeFileSync('definition.json', JSON.stringify(this.definition, null, 2))
   }
 
   public async saveTypes() {
